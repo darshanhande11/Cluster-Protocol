@@ -1,6 +1,14 @@
 .dashboard-div {
     display: flex;
 }
+.sidenav-div {
+    height: 100vh;
+    width: 20vw;
+}
 .dashboard-content-div {
     overflow: auto;
+    height: 100vh;
+    width: 80vw;
+    display: flex;
+    justify-content: center;
 }

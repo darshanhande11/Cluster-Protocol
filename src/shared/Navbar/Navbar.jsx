@@ -6,7 +6,7 @@ import { ClusterOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/
 const Navbar = () => {
   return (
     <div className='nav-div'>
-        <Menu className='navbar' mode="horizontal">
+        <Menu className='navbar' mode="horizontal" theme='dark'>
             <div className='nav-logo-div'>
                 <ClusterOutlined className='nav-logo' />
                 <span className='logo-heading'>

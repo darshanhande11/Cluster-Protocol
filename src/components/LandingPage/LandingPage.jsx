@@ -3,8 +3,10 @@ import { RightOutlined } from '@ant-design/icons'
 import React from 'react'
 import Navbar from '../../shared/Navbar/Navbar'
 import './LandingPage.css'
+import { useNavigate } from 'react-router-dom'
 
 const LandingPage = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <Navbar />
@@ -18,7 +20,9 @@ const LandingPage = () => {
           </div>
         </div>
         <div className='lp-row2'>
-          <Button size='large' type='primary' className='lp-button'>
+          <Button size='large' type='primary' className='lp-button' onClick={()=>{
+            navigate("/dashboard");
+          }}>
             <span className='lp-button-text'>Get Started</span>
             <RightOutlined className='lp-button-icon' />
           </Button>

@@ -13,7 +13,7 @@ const Dashboard = () => {
         </div>
         <div className='dashboard-content-div'>
             {
-                item === 'createPool' ? <CreatePool /> : <Pools />
+                item === 'createPool' ? <CreatePool className='cp-comp' /> : <Pools className='pools-comp' />
             }
         </div>
     </div>

@@ -1,0 +1,6 @@
+.dashboard-div {
+    display: flex;
+}
+.dashboard-content-div {
+    overflow: auto;
+}

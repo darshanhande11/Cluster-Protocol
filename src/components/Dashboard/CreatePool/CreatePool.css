@@ -1,0 +1,18 @@
+.cp-div {
+    margin: 0 3vw;
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+}
+.cp-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+}
+.cp-form {
+    margin: 5vh 0;
+}
+.cp-submit-form-item {
+    padding: 5vh 0;
+}

@@ -1,0 +1,25 @@
+.mp-div {
+    width: 100%;
+}
+.mp-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+}
+.mp-grid-div {
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 4vh 0;
+    justify-items: center;
+    padding: 3vh 0;
+}
+.mp-card {
+    border-radius: 0.5rem;
+}
+.mp-card-price {
+    margin: 1vh 0;
+}
+.mp-card-address {
+    margin: 1vh 0;
+}

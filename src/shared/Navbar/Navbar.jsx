@@ -2,6 +2,7 @@ import React from 'react'
 import './Navbar.css'
 import { Menu, Button } from 'antd';
 import { ClusterOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
+import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 const Navbar = () => {
   return (
@@ -17,9 +18,10 @@ const Navbar = () => {
                 <Button type='primary' className='nav-btn'>
                     Create Pool
                 </Button>
-                <Button className='nav-btn'>
+                {/* <Button className='nav-btn'>
                     Connect
-                </Button>
+                </Button> */}
+                <ConnectButton className='nav-btn' />
             </div>
         </Menu>
     </div>

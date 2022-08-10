@@ -1,12 +1,16 @@
 import React from 'react';
-import { useAccount } from 'wagmi';
+import { useSigner, useContract } from 'wagmi';
 
-const GetAccount = () => {
-   const { address, isConnecting, isDisconnected } = useAccount()
+const GetContract = (addr, abidata) => {
+    const { data: signer, isError, isLoading } = useSigner()
 
-  if (isConnecting) return <div>Connecting…</div>
-  if (isDisconnected) return <div>Disconnected</div>
-  return address;
+  const contract = useContract({
+    addressOrName: addr,
+    contractInterface: abidata,
+    signerOrProvider: signer,
+  })
+  
+  return contract;
 }
- 
-export default GetAccount;
+
+export default GetContract;

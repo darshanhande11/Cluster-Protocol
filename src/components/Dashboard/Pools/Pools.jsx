@@ -5,12 +5,15 @@ import './Pools.css'
 import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'antd/lib/form/Form';
+import { Link } from 'react-router-dom';
 
 const data = Array.from({
   length: 23,
 }).map((_, i) => ({
+  id: i,
   title: `ant design part ${i}`,
   funds: '2.03 ETH / 8.00 ETH',
+  participants: i,
 }));
 
 
@@ -43,7 +46,7 @@ const Pools = () => {
           <List.Item
             key={item.title}
             actions={[
-              <IconText icon={FaUsers} text="156" key="list-vertical-users-o" />,
+              <IconText icon={FaUsers} text={item.participants} key="list-vertical-users-o" />,
               <ActionButton text={'Add Funds'} />,
             ]}
             extra={
@@ -55,7 +58,7 @@ const Pools = () => {
             }
           >
             <List.Item.Meta
-              title={item.title}
+              title={<Link to={`/pools/${item.id}`}>{item.title}</Link>}
             />
             {item.funds}
           </List.Item>

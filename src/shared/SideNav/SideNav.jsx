@@ -18,7 +18,7 @@ function getItem(label, key, icon, children, type) {
 
 const items = [
   getItem('Pools', 'pools', <FaUsers style={{ fontSize: '1.2vw', color: 'white' }}/>),
-  getItem('Create Pool', 'createPool', <AiFillFileAdd style={{ fontSize: '1.2vw', color: 'white' }}/>),
+  getItem('Create Pool', 'create-pool', <AiFillFileAdd style={{ fontSize: '1.2vw', color: 'white' }}/>),
   getItem('Marketplace', 'marketplace', <FaEthereum style={{ fontSize: '1.2vw', color: 'white' }}/>),
 ];
 
@@ -27,6 +27,7 @@ const SideNav = (props) => {
   const navigate = useNavigate();
   const onClick = (e) => {
     ci.setItem(e.key);
+    navigate(e.key);
   };
 
   return (

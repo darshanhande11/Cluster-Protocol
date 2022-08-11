@@ -17,11 +17,6 @@ const Navbar = () => {
                 </span>
             </div>
             <div className='navbar-btn-div'>
-                <Button type='primary' className='nav-btn' onClick={() => {
-                    navigate("/dashboard");
-                }}>
-                    Create Pool
-                </Button>
                 {/* <Button className='nav-btn'>
                     Connect
                 </Button> */}

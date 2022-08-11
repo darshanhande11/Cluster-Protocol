@@ -1,9 +1,7 @@
 .side-nav-menu {
-    height: 100vh;
-    width: 17vw;
+    height: 100%;
+    width: 18%;
     padding: 0 2vw;
-    border-top-right-radius: 0.9vw;
-    border-bottom-right-radius: 0.9vw;
 }
 .ant-menu-item {
     margin: 6.5vh 0 !important;

@@ -2,8 +2,14 @@ import { Card, Button } from 'antd'
 import { FaEthereum } from 'react-icons/fa';
 import React from 'react'
 import './MarketPlace.css'
+import addresses from '../../../config'
+import GetAccount from '../../../hooks/GetAccount';
+import GetContract from '../../../hooks/GetContract';
+import FakeItTokenContractArtifact from '../../../Ethereum/FakeIt.json'
 
 const MarketPlace = () => {
+  let userAddress = GetAccount();
+  let fakeItTokenContract = GetContract(addresses.fakeItToken, FakeItTokenContractArtifact.abi);
   const data = [
     {
         img_url: "https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png",
@@ -45,6 +51,7 @@ const MarketPlace = () => {
   return (
     <div className='mp-div'>
         <h1 className='mp-heading'>Market Place</h1>
+        <button> mint </button>
         <div className='mp-grid-div'>
             {
                 data.map((item, index) => {

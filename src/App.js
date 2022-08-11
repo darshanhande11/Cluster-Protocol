@@ -11,7 +11,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 
 
 const { chains, provider } = configureChains(
-  [chain.polygonMumbai, chain.ropsten, chain.goerli],
+  [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
   [
     alchemyProvider({ alchemyId: process.env.REACT_APP_GOERLI_API_URL }),
     publicProvider(),

@@ -4,6 +4,7 @@ import './CreatePool.css';
 import FundsManagerContractArtifact from '../../../Ethereum/FundsManager.json'
 import GetAccount from '../../../hooks/GetAccount.js'
 import GetContract from '../../../hooks/GetContract';
+import addresses from '../../../config'
 
 const CreatePools = () => {
 
@@ -16,16 +17,29 @@ const CreatePools = () => {
     mapValue: []
   })
 
-  let address = GetAccount();
-  let contract = GetContract(address, FundsManagerContractArtifact.abi);
+  const getId = (length) => {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for (var i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() *
+        charactersLength));
+    }
+    return result;
+  }
+
+  // let address = GetAccount();
+  let contract = GetContract(addresses.fundsManager, FundsManagerContractArtifact.abi);
 
   const handlePoolChange = (e) => {
     setPoolData({
       ...poolData,
       [e.target.name]: e.target.value
     })
+    // console.log(" this is value and participants and pooldata ", poolData);
     if (e.target.name === 'participants') {
       console.log(" this is value ", e.target.value);
+    console.log(" this is value and participants and pooldata ", poolData);
       setPoolData({
         ...poolData,
         mapValue: Array.from({ length: e.target.value }).fill('yo')
@@ -36,8 +50,14 @@ const CreatePools = () => {
   const createPool = async () => {
     try {
       console.log(" this is called ");
-      let createPoolTxn = await contract.createPool("poolId", poolData.title, poolData.participants, poolData.addresses, poolData.funds);
-      await createPoolTxn.wait();
+      if (contract) {
+        // string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal
+        console.log(" this is updated pool data " ,poolData);
+        let createPoolTxn = await contract.createPool(getId(5), poolData.title, poolData.mapValue.length, poolData.addresses, poolData.funds);
+        await createPoolTxn.wait();
+      } else {
+        message.warning('Please connect metamask first');
+      }
     } catch (err) {
       console.log(err.message);
     }

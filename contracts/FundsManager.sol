@@ -26,6 +26,7 @@ contract FundsManager {
         uint256 positiveCount;
         uint256 negativeCount;
         OwnerShipTokens ownerShipTokenAddress;
+        string poolId;
     }
 
     mapping(string => pool) public pools;
@@ -35,10 +36,13 @@ contract FundsManager {
     function createPool(string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal) external {
         pools[_poolId].poolName = _poolName;
         pools[_poolId].poolSize = _poolSize;
-        pools[_poolId].owners = _owners;
+        for(uint i=0;i<_poolSize; i++) {
+            pools[_poolId].owners.push(_owners[i]);
+        }
         pools[_poolId].fundGoal = _fundsGoal;
         poolOwners[msg.sender].push(_poolId);
         poolIds.push(_poolId);
+        pools[_poolId].poolId = _poolId;
     }
 
     function contributeFunds(string memory _poolId) external payable {
@@ -65,6 +69,14 @@ contract FundsManager {
         } else {
             pools[_poolId].negativeCount++; 
         }
+    }
+    
+    function getUserPools() external view returns (string[] memory) {
+        return poolOwners[msg.sender];
+    }
+
+    function getPoolOwners(string memory _poolId) external view returns (address[] memory) {
+        return pools[_poolId].owners;
     }
 }
 

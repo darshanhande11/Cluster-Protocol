@@ -12,6 +12,7 @@
 }
 .cp-form {
     margin: 5vh 0;
+    overflow: auto;
 }
 .cp-submit-form-item {
     padding: 5vh 0;

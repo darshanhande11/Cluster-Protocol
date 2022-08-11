@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Input, Form, message } from 'antd';
+import { Button, Input, Form, message, InputNumber } from 'antd';
 import './CreatePool.css';
 import FundsManagerContractArtifact from '../../../Ethereum/FundsManager.json'
 import GetAccount from '../../../hooks/GetAccount.js'
@@ -71,7 +71,13 @@ const CreatePools = () => {
           <Input placeholder='e.g. : 0x042d434242015acd48e3889C2510DFe221D5fABb' name='address' onChange={(e) => handlePoolChange(e)} />
         </Form.Item>
         <Form.Item label="Number of Participants" name="Number of Participants" rules={[{ required: true }]} >
-          <Input type='number' placeholder='minimum 1 participant required' name='participants' onChange={(e) => handlePoolChange(e)} />
+          <InputNumber min={1} max={10} placeholder='minimum 1 participant required' name='participants' onChange={(val) => {
+            setPoolData({
+              ...poolData,
+              participants: val,
+              mapValue: Array.from({ length: val }).fill('yo')
+            })
+          }} />
         </Form.Item>
         <Form.Item label="Total Funds Required" name="Total Funds Required" rules={[{ required: true }]} >
           <Input type='number' placeholder='in ether' name='funds' onChange={(e) => handlePoolChange(e)} />

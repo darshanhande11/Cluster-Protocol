@@ -10,6 +10,7 @@ import GetContract from '../../../hooks/GetContract';
 import FundsManagerContractArtifact from '../../../Ethereum/FundsManager.json'
 import { ethers } from 'ethers';
 import addresses from '../../../config';
+import { Link } from 'react-router-dom';
 
 // const data = Array.from({
 //   length: 23,
@@ -17,6 +18,17 @@ import addresses from '../../../config';
 //   title: `ant design part ${i}`,
 //   funds: '2.03 ETH / 8.00 ETH',
 // }));
+// =======
+
+// const data = Array.from({
+//   length: 23,
+// }).map((_, i) => ({
+//   id: i,
+//   title: `ant design part ${i}`,
+//   funds: '2.03 ETH / 8.00 ETH',
+//   participants: i,
+// }));
+
 
 
 const Pools = () => {
@@ -27,7 +39,6 @@ const Pools = () => {
   const [currentPoolId, setCurrentPoolId] = useState('');
   let address = GetAccount();
   let contract = GetContract(addresses.fundsManager, FundsManagerContractArtifact.abi);
-
 
   const isUserPool = async (pool) => {
     try {
@@ -133,7 +144,7 @@ const Pools = () => {
             }
           >
             <List.Item.Meta
-              title={item.name}
+              title={<Link to={`/pools/${item.poolId}`}>{item.title}</Link>}
             />
             {item.funds + ' ETH / ' + item.goal + ' ETH'}
           </List.Item>

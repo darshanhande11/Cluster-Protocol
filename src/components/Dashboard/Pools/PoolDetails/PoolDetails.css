@@ -1,0 +1,11 @@
+.pd-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.pd-img {
+    height: 30%;
+}
+.pd-users-div {
+    margin: 2vh 0;
+}

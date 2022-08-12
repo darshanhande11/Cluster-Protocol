@@ -78,5 +78,9 @@ contract FundsManager {
     function getPoolOwners(string memory _poolId) external view returns (address[] memory) {
         return pools[_poolId].owners;
     }
+
+    receive() external payable {
+        
+    }
 }
 

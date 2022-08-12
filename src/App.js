@@ -7,8 +7,11 @@ import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
-import Dashboard from './components/Dashboard/Dashboard';
-
+import PageLayout from "./shared/PageLayout/PageLayout";
+import Pools from "./components/Dashboard/Pools/Pools";
+import CreatePool from "./components/Dashboard/CreatePool/CreatePool";
+import MarketPlace from "./components/Dashboard/MarketPlace/MarketPlace";
+import PoolDetails from "./components/Dashboard/Pools/PoolDetails/PoolDetails";
 
 const { chains, provider } = configureChains(
   [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
@@ -35,10 +38,15 @@ function App() {
       <WagmiConfig client={wagmiClient}>
         <RainbowKitProvider chains={chains}>
           <Router>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
+            <PageLayout>
+              <Routes>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/pools" element={<Pools />} />
+                <Route path="/create-pool" element={<CreatePool />} />
+                <Route path="/marketplace" element={<MarketPlace />} />
+                <Route path="/pools/:id" element={<PoolDetails />} />
+              </Routes>
+            </PageLayout>
           </Router>
         </RainbowKitProvider>
       </WagmiConfig>

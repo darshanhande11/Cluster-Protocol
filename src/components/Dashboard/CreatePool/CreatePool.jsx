@@ -14,7 +14,8 @@ const CreatePools = () => {
     participants: 0,
     funds: 0,
     addresses: [],
-    mapValue: []
+    mapValue: [],
+    tokenId: 0
   })
 
   const getId = (length) => {
@@ -53,7 +54,7 @@ const CreatePools = () => {
       if (contract) {
         // string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal
         console.log(" this is updated pool data " ,poolData);
-        let createPoolTxn = await contract.createPool(getId(5), poolData.title, poolData.mapValue.length, poolData.addresses, poolData.funds);
+        let createPoolTxn = await contract.createPool(getId(5), poolData.title, poolData.mapValue.length, poolData.addresses, poolData.funds, poolData.tokenId);
         await createPoolTxn.wait();
       } else {
         message.warning('Please connect metamask first');
@@ -101,6 +102,9 @@ const CreatePools = () => {
         </Form.Item>
         <Form.Item label="Total Funds Required" name="Total Funds Required" rules={[{ required: true }]} >
           <Input type='number' placeholder='in ether' name='funds' onChange={(e) => handlePoolChange(e)} />
+        </Form.Item>
+        <Form.Item label="Token Id of NFT needed" name="Token Id of NFT needed" rules={[{ required: true }]} >
+          <Input type='number' placeholder='int' name='tokenId' onChange={(e) => handlePoolChange(e)} />
         </Form.Item>
         {poolData.mapValue.map((data, id) => {
           return (

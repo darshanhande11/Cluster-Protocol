@@ -63,7 +63,7 @@ const Pools = () => {
         // allUserPools.push(pool);
         // console.log(" this is pool ", pool);
         // console.log(" these are pool funds ", parseInt(pool.funds._hex));
-        if(await isUserPool(pool)) {
+        if (await isUserPool(pool)) {
           allUserPools.push({
             goal: parseInt(pool.fundGoal._hex),
             funds: parseInt(pool.funds._hex) / 10 ** 18,
@@ -109,6 +109,16 @@ const Pools = () => {
       let contributeTxn = await contract.contributeFunds(currentPoolId, { value: ethers.utils.parseEther(funds) });
       await contributeTxn.wait();
       setVis(false);
+      getUserPools();
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+
+  const makeConsensus = async (poolId, isAgree) => {
+    try {
+      let consensusTxn = await contract.makeConsensus(poolId, isAgree);
+      await consensusTxn.wait();
     } catch (err) {
       console.log(err.message);
     }
@@ -126,7 +136,7 @@ const Pools = () => {
             key={item.poolId}
             actions={[
               <IconText icon={FaUsers} text={item.size} key="list-vertical-users-o" />,
-              <ActionButton text={'Add Funds'} poolId = {item.poolId}
+              <ActionButton text={'Add Funds'} poolId={item.poolId}
               // onClick={() => {
               //   console.log(" this is called ");
               //   console.log(" this is pool id ", item.poolId);
@@ -144,9 +154,15 @@ const Pools = () => {
             }
           >
             <List.Item.Meta
-              title={<Link to={`/pools/${item.poolId}`}>{item.title}</Link>}
+              title={<Link to={`/pools/${item.poolId}`}>{item.name}</Link>}
             />
             {item.funds + ' ETH / ' + item.goal + ' ETH'}
+            {item.funds >= item.goal ? <>
+              <button onClick={() => makeConsensus(item.poolId, true)}>
+                Yes
+              </button>
+              <button onClick={() => makeConsensus(item.poolId, false)} > no </button>
+            </> : null}
           </List.Item>
         )}
       />

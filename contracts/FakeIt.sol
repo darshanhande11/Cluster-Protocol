@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
+
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
@@ -10,7 +11,7 @@ contract FakeIt is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
-    uint public tokenCount = 0;
+    uint public tokenCount;
 
     constructor() ERC721("FakeIt", "FKT") {}
 
@@ -18,12 +19,19 @@ contract FakeIt is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
         return "https://gateway.pinata.cloud/ipfs/";
     }
 
-    function safeMint(address to, string memory uri) public onlyOwner {
+    function safeMint(address to, string memory uri) payable public {
+        // need to pay some price here 
+        // for now just making non zero fee as minting fee
+        require(msg.value != 0, "NFT is not free");
         tokenCount++;
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
         _setTokenURI(tokenId, uri);
+    }
+
+    function getTokenCount() external view returns(uint) {
+        return tokenCount - 1;
     }
 
     // The following functions are overrides required by Solidity.

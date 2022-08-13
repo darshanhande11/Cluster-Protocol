@@ -1,6 +1,7 @@
 const addresses = {
-    "fundsManager": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
-    "fakeItToken": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82"
+    "fundsManager": "0x4A679253410272dd5232B3Ff7cF5dbB88f295319",
+    "fakeItToken": "0x68B1D87F95878fE05B998F19b66F4baba5De1aed",
+    "marketPlaceAddress": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
 }
 
 export default addresses;

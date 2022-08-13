@@ -44,7 +44,7 @@ function App() {
                 <Route path="/pools" element={<Pools />} />
                 <Route path="/create-pool" element={<CreatePool />} />
                 <Route path="/marketplace" element={<MarketPlace />} />
-                <Route path="/pools/:id" element={<PoolDetails />} />
+                <Route path="/pools/:poolId" element={<PoolDetails />} />
               </Routes>
             </PageLayout>
           </Router>

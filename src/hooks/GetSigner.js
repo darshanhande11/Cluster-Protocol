@@ -1,7 +1,7 @@
 import { useSigner } from "wagmi";
 
 const GetSigner = () => {
-    const{data:signer}=useSigner();
+    const {data: signer} = useSigner();
     return signer;
 }
 

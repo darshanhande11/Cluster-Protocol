@@ -51,7 +51,7 @@ const MarketPlace = () => {
                     return (
                         <Card
                             key={index}
-                            cover={<img src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" alt="cover-img" />}
+                            cover={<img className='mp-cover-img' src="https://i.pinimg.com/736x/86/9d/98/869d9814541e62ccb9439ed24d59b355.jpg" alt="cover-img" />}
                             actions={[
                                 <ActionButton text={'Buy'} />,
                             ]}

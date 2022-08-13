@@ -1,5 +1,5 @@
 .side-nav-menu {
-    height: 100%;
+    height: webkit-fill-available;
     width: 18%;
     padding: 0 2vw;
 }

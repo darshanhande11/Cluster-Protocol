@@ -1,3 +1,16 @@
+.pools-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.pools-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+}
 .pools-list-par {
     width: 75%;
+    display: flex;
+    flex-direction: column;
 }

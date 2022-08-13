@@ -31,11 +31,15 @@ const Pools = () => {
     </Space>
   );
   
-  const ActionButton = ({ text }) => (
-    <Button type='primary' onClick={()=>{setVis(true)}} >
+  const ActionButton = ({ text, type, onClick, className }) => (
+    <Button type={type} onClick={onClick} className={className} >
       {text}
     </Button>
   )
+
+  const [isConsLive, setConsLive] = useState(false);
+  const [isVoted, setVoted] = useState(false);
+
   return (
     <div className='pools-div'> 
         <div className='pools-list-par'>
@@ -49,7 +53,10 @@ const Pools = () => {
               key={item.title}
               actions={[
                 <IconText icon={FaUsers} text={item.participants} key="list-vertical-users-o" />,
-                <ActionButton text={'Add Funds'} />,
+                <ActionButton text={'Add Funds'} type='primary' onClick={()=>{setVis(true)}} />,
+                !isConsLive && <ActionButton text={'Start Consensus'} type='primary' onClick={()=>setConsLive(true)} />,
+                isConsLive && !isVoted && <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={()=>setVoted(true)} />,
+                isConsLive && !isVoted && <ActionButton text={'No'} type='danger' onClick={()=>setVoted(true)} />,
               ]}
               extra={
                 <img

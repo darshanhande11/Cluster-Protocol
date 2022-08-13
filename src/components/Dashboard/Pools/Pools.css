@@ -10,7 +10,17 @@
     text-align: center;
 }
 .pools-list-par {
-    width: 75%;
+    width: 85%;
     display: flex;
     flex-direction: column;
+}
+.pool-success-btn {
+    background-color: green !important;
+    color: white;
+    border-color: green;
+}
+.pool-success-btn:hover{
+    background-color: #5dad5d !important;
+    color: white;
+    border-color: #5dad5d;
 }

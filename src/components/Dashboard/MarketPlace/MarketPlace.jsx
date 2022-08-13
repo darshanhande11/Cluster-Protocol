@@ -115,7 +115,7 @@ const MarketPlace = () => {
                     return (
                         <Card
                             key={index}
-                            cover={<img src={item.uri} alt={item.name} />}
+                            cover={<img src={item.uri} alt={item.name} className='mp-cover-img' />}
                             actions={[
                                 <ActionButton text={'Buy'} itemId = {index} />,
                             ]}

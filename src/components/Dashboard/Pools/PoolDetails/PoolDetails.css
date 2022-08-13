@@ -6,6 +6,17 @@
 .pd-img {
     height: 30%;
 }
+.pd-img:hover {
+    transform: scale(1.1);
+    cursor:default;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
 .pd-users-div {
     margin: 2vh 0;
+}
+.pd-heading {
+    font-size: 2rem;
+    font-family: 'ManropeBold';
+    text-align: center;
+    border-bottom: 2px solid rgb(78, 230, 179);
 }

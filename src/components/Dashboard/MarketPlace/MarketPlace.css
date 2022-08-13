@@ -6,6 +6,10 @@
     font-family: 'ManropeBold';
     text-align: center;
 }
+.mp-cover-img {
+    width: 100%;
+    height: 30vh;
+}
 .mp-grid-div {
     display: grid;
     justify-content: center;
@@ -15,7 +19,7 @@
     padding: 3vh 0;
 }
 .mp-card {
-    border-radius: 0.5rem;
+    width: 80%;
 }
 .mp-card-price {
     margin: 1vh 0;

@@ -51,8 +51,10 @@ const PoolDetails = () => {
         address: '0xCE807535316Aeac7d3108E93B7F1dADaaBbD36A0',
     },
   ];
+  const poolName = 'Pool 1';
   return (
     <div className='pd-div'>
+        <h1 className='pd-heading'>Pool Details for {poolName}</h1>
         <img src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" className='pd-img' />
         <div className='pd-users-div'>
             {

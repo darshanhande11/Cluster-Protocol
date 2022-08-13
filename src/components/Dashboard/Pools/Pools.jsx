@@ -12,25 +12,6 @@ import { ethers } from 'ethers';
 import addresses from '../../../config';
 import { Link } from 'react-router-dom';
 
-// const data = Array.from({
-//   length: 23,
-// }).map((_, i) => ({
-//   title: `ant design part ${i}`,
-//   funds: '2.03 ETH / 8.00 ETH',
-// }));
-// =======
-
-// const data = Array.from({
-//   length: 23,
-// }).map((_, i) => ({
-//   id: i,
-//   title: `ant design part ${i}`,
-//   funds: '2.03 ETH / 8.00 ETH',
-//   participants: i,
-// }));
-
-
-
 const Pools = () => {
   const [isVis, setVis] = useState(false);
   const [form] = useForm();
@@ -96,9 +77,9 @@ const Pools = () => {
       {text}
     </Space>
   );
-
-  const ActionButton = ({ text, poolId }) => (
-    <Button type='primary' onClick={() => { setVis(true); setCurrentPoolId(poolId) }} >
+  // setCurrentPoolId(poolId)  
+  const ActionButton = ({ text, type, onClick, className }) => (
+    <Button type={type} onClick={onClick} className={className} >
       {text}
     </Button>
   )
@@ -124,66 +105,61 @@ const Pools = () => {
     }
   }
 
+  const [isConsLive, setConsLive] = useState(false);
+  const [isVoted, setVoted] = useState(false);
 
   return (
-    <div className='pools-list-par'>
-      <List
-        itemLayout="vertical"
-        size="large"
-        dataSource={userPools}
-        renderItem={(item) => (
-          <List.Item
-            key={item.poolId}
-            actions={[
-              <IconText icon={FaUsers} text={item.size} key="list-vertical-users-o" />,
-              <ActionButton text={'Add Funds'} poolId={item.poolId}
-              // onClick={() => {
-              //   console.log(" this is called ");
-              //   console.log(" this is pool id ", item.poolId);
-
-              //   setVis(true);
-              // }} 
-              />,
-            ]}
-            extra={
-              <img
-                width={272}
-                alt="logo"
-                src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+    <div className='pools-div'> 
+        <div className='pools-list-par'>
+        <h1 className='pools-heading'>Your Pools</h1>
+        <List
+          itemLayout="vertical"
+          size="large"
+          dataSource={userPools}
+          renderItem={(item) => (
+            <List.Item
+              key={item.poolId}
+              actions={[
+                <IconText icon={FaUsers} text={item.size} key="list-vertical-users-o" />,
+                <ActionButton text={'Add Funds'} type='primary' onClick={() => { setVis(true); setCurrentPoolId(item.poolId) }} />,
+                // !isConsLive && <ActionButton text={'Start Consensus'} type='primary' onClick={()=>setConsLive(true)} />,
+                (item.funds >= item.goal) && <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(true)} />,
+                (item.funds >= item.goal) && <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(false)} />,
+              ]}
+              extra={
+                <img
+                  width={272}
+                  alt="logo"
+                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                />
+              }
+            >
+              <List.Item.Meta
+                title={<Link to={`/pools/${item.poolId}`}>{item.name}</Link>}
               />
-            }
-          >
-            <List.Item.Meta
-              title={<Link to={`/pools/${item.poolId}`}>{item.name}</Link>}
-            />
-            {item.funds + ' ETH / ' + item.goal + ' ETH'}
-            {item.funds >= item.goal ? <>
-              <button onClick={() => makeConsensus(item.poolId, true)}>
-                Yes
-              </button>
-              <button onClick={() => makeConsensus(item.poolId, false)} > no </button>
-            </> : null}
-          </List.Item>
-        )}
-      />
-      <Modal
-        title="Add Funds"
-        visible={isVis}
-        onOk={() => contributeFundsToPool()}
-        onCancel={() => { setCurrentPoolId(''); setVis(false) }}
-      >
-        <Form className='addfunds-modal-form' form={form} layout="vertical">
-          <Form.Item>
-            <Input
-              type="number"
-              min="0.000000000000000001"
-              placeholder="Enter amount in ETH"
-              step="0.000000000000000001"
-              onChange={(e) => setFunds(e.target.value)}
-            />
-          </Form.Item>
-        </Form>
-      </Modal>
+              {item.funds + ' ETH / ' + item.goal + ' ETH'}
+            </List.Item>
+          )}
+        />
+        <Modal 
+          title="Add Funds"
+          visible={isVis}
+          onOk={() => contributeFundsToPool()}
+          onCancel={() => { setCurrentPoolId(''); setVis(false) }}
+        >
+          <Form className='addfunds-modal-form' form={form} layout="vertical">
+            <Form.Item>
+              <Input 
+                type="number" 
+                min="0.000000000000000001"
+                placeholder="Enter amount in ETH"
+                step="0.000000000000000001" 
+                onChange={(e) => setFunds(e.target.value)}
+              />
+            </Form.Item>
+          </Form>
+        </Modal>
+      </div>
     </div>
   )
 }

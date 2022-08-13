@@ -14,7 +14,7 @@ import MarketPlace from "./components/Dashboard/MarketPlace/MarketPlace";
 import PoolDetails from "./components/Dashboard/Pools/PoolDetails/PoolDetails";
 
 const { chains, provider } = configureChains(
-  [chain.polygonMumbai, chain.ropsten, chain.goerli],
+  [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
   [
     alchemyProvider({ alchemyId: process.env.REACT_APP_GOERLI_API_URL }),
     publicProvider(),
@@ -44,7 +44,7 @@ function App() {
                 <Route path="/pools" element={<Pools />} />
                 <Route path="/create-pool" element={<CreatePool />} />
                 <Route path="/marketplace" element={<MarketPlace />} />
-                <Route path="/pools/:id" element={<PoolDetails />} />
+                <Route path="/pools/:poolId" element={<PoolDetails />} />
               </Routes>
             </PageLayout>
           </Router>

@@ -3,7 +3,13 @@ pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
-contract MarketPlace {
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+
+import "hardhat/console.sol";
+
+contract MarketPlace is ReentrancyGuard {
+
+    // Variables
     address payable public immutable feeAccount; // the account that receives fees
     uint public immutable feePercent; // the fee percentage on sales 
     uint public itemCount; 
@@ -27,7 +33,6 @@ contract MarketPlace {
         uint price,
         address indexed seller
     );
-    
     event Bought(
         uint itemId,
         address indexed nft,
@@ -43,10 +48,10 @@ contract MarketPlace {
     }
 
     // Make item to offer on the marketplace
-    function makeItem(IERC721 _nft, uint _tokenId, uint _price) external {
+    function makeItem(IERC721 _nft, uint _tokenId, uint _price) external nonReentrant {
         require(_price > 0, "Price must be greater than zero");
         // increment itemCount
-        itemCount++;
+        itemCount ++;
         // transfer nft
         _nft.transferFrom(msg.sender, address(this), _tokenId);
         // add new item to items mapping
@@ -68,7 +73,7 @@ contract MarketPlace {
         );
     }
 
-    function purchaseItem(uint _itemId) external payable {
+    function purchaseItem(uint _itemId) external payable nonReentrant {
         uint _totalPrice = getTotalPrice(_itemId);
         Item storage item = items[_itemId];
         require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
@@ -92,6 +97,6 @@ contract MarketPlace {
         );
     }
     function getTotalPrice(uint _itemId) view public returns(uint){
-        return((items[_itemId].price*(100 + feePercent))/100);
+        return((items[_itemId].price * (100 + feePercent))/100);
     }
 }

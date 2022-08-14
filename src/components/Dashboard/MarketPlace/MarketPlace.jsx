@@ -105,13 +105,51 @@ const MarketPlace = () => {
     })).wait()
   }
 
+  const data = [
+    {
+        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+        tagline: "NFT Title",
+        tokenId: "0x3827277dicnw882283",
+        price: 5,
+        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+    },
+    {
+        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+        tagline: "NFT Title",
+        tokenId: "0x3827277dicnw882283",
+        price: 5,
+        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+    },
+    {
+        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+        tagline: "NFT Title",
+        tokenId: "0x3827277dicnw882283",
+        price: 5,
+        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+    },
+    {
+        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+        tagline: "NFT Title",
+        tokenId: "0x3827277dicnw882283",
+        price: 5,
+        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+    },
+    {
+        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+        tagline: "NFT Title",
+        tokenId: "0x3827277dicnw882283",
+        price: 5,
+        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+    },
+  ];
+
   return (
     <div className='mp-div'>
         <h1 className='mp-heading'>Market Place</h1>
         <button onClick={() => mintNFT()}> mint </button>
         <div className='mp-grid-div'>
             {
-                tokens.map((item, index) => {
+                data.map((item, index) => {
                     return (
                         <Card
                             key={index}
@@ -121,8 +159,8 @@ const MarketPlace = () => {
                             ]}
                             className='mp-card'
                         >
-                            <h3>{item.tagline}</h3>
-                            <h3> TokenId: {item.tokenId} </h3> 
+                            <h3 className='mp-card-heading'>{item.tagline}</h3>
+                            <h3 className='mp-card-heading'> TokenId: {item.tokenId} </h3> 
                             <div className='mp-card-price'>
                                 <span>Price</span><br/>
                                 <div>

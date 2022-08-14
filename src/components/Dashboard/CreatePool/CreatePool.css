@@ -18,23 +18,23 @@
     font-size: 1.2rem;
 }
 .ant-input {
-    background-color: transparent;
+    background-color: rgb(48, 49, 51);
     border-radius: 0.5vw;
 }
 .ant-input-status-success {
     color: white;
 }
 .ant-input-number-input {
-    background-color: #191B1F;
+    background-color: rgb(48, 49, 51);
     color: white;
     border-radius: 0.5vw;
 }
 .ant-input-number-input-status-error {
-    background-color: #191B1F !important;
+    background-color: rgb(48, 49, 51) !important;
     color: white;
 }
 .ant-input-status-error {
-    background-color: transparent !important;
+    background-color: rgb(48, 49, 51) !important;
 }
 .cp-submit-form-item {
     padding: 5vh 0;

@@ -7,9 +7,9 @@
     height: 30%;
 }
 .pd-img:hover {
-    transform: scale(1.1);
+    transform: scale(1.03);
     cursor:default;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 5px rgba(143, 140, 140, 0.74);
 }
 .pd-users-div {
     margin: 2vh 0;
@@ -19,4 +19,5 @@
     font-family: 'ManropeBold';
     text-align: center;
     border-bottom: 2px solid rgb(78, 230, 179);
+    color: #ffff;
 }

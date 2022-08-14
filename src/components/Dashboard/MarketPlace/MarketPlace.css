@@ -5,6 +5,7 @@
     font-size: 2rem;
     font-family: 'ManropeBold';
     text-align: center;
+    color: #fff;
 }
 .mp-cover-img {
     width: 100%;
@@ -18,9 +19,35 @@
     justify-items: center;
     padding: 3vh 0;
 }
+.ant-card-bordered {
+    border: 0;
+    color: #ffff;
+    box-shadow: 3px 3px 15px #adace7d3;
+    font-family: 'ManropeRegular';
+    font-size: 0.83rem;
+}
+.ant-card-bordered:hover {
+    transform: scale(1.02);
+}
+.mp-card-heading {
+    color: #ffff;
+    font-family: 'ManropeBold';
+    font-size: 1rem;
+}
+.ant-card-actions {
+    border: 0;
+    background-color: rgb(48, 49, 51);
+}
 .mp-card {
+/* <<<<<<< HEAD
     width: 18vw;
     height: 70vh;
+======= */
+    width: 80%;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(48, 49, 51);
+/* >>>>>>> d24bfe1bbe77a955ea94cd01256424fa22012359 */
 }
 .mp-card-price {
     margin: 1vh 0;

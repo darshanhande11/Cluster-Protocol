@@ -8,7 +8,7 @@ const PdUserCard = (props) => {
   return (
     <Card className='pd-card'>
         <Meta 
-            avatar={<Avatar src={`https://robohash.org/${props.address}`} />}
+            avatar={<Avatar src={`https://robohash.org/${props.userId}`} />}
             title={`${props.percentage} %`}
             description={props.address}
         />

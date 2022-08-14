@@ -1,3 +1,9 @@
+.cp-par-div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .cp-div {
     margin: 0 3vw;
     width: 60vw;

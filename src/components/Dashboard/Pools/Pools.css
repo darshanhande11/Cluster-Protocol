@@ -47,3 +47,33 @@
 .ant-space-item {
     color: #ffff;
 }
+.ant-list-item-action-split {
+    display: none !important;
+}
+.ant-modal-content {
+    background-color: #191B1F;
+    color: #ffff;
+    border-radius: 0.5vw;
+    border: none !important;
+    border-radius: 1.5vw;
+}
+.ant-modal-header {
+    background-color: #191B1F;
+    border-top-left-radius: 1.5vw;
+    border-top-right-radius: 1.5vw;
+}
+.ant-input {
+    color: #ffff;
+    background-color: rgb(48, 49, 51);
+}
+.ant-modal-title {
+    font-family: 'ManropeBold';
+    font-size: 1rem;
+    color: #ffff;
+}
+.ant-modal-close {
+    color: #ffff;
+}
+.ant-modal-close:hover {
+    color: rgb(233, 99, 99);
+}

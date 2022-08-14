@@ -113,8 +113,8 @@ const Pools = () => {
   }).map((_, i) => ({
     poolId: i,
     name: `ant design part ${i}`,
-    funds: '2.03',
-    goal: '10',
+    funds: 1,
+    goal: 10,
     size: i,
   }));
 
@@ -133,8 +133,8 @@ const Pools = () => {
                 <IconText icon={FaUsers} text={item.size} key="list-vertical-users-o" />,
                 <ActionButton text={'Add Funds'} type='primary' onClick={() => { setVis(true); setCurrentPoolId(item.poolId) }} />,
                 // !isConsLive && <ActionButton text={'Start Consensus'} type='primary' onClick={()=>setConsLive(true)} />,
-                (item.funds >= item.goal) && <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(true)} />,
-                (item.funds >= item.goal) && <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(false)} />,
+                (item.funds >= item.goal) ? <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(true)} /> : null,
+                (item.funds >= item.goal) ? <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(false)} /> : null,
               ]}
               extra={
                 <img
@@ -154,6 +154,7 @@ const Pools = () => {
         />
         <Modal 
           title="Add Funds"
+          className='add-funds-modal'
           visible={isVis}
           onOk={() => contributeFundsToPool()}
           onCancel={() => { setCurrentPoolId(''); setVis(false) }}

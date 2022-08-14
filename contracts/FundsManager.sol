@@ -10,6 +10,8 @@ contract MarketPlaceInterface {
 contract FundsManager {
     // below is DAI token address for now but will be replace with FakeItNFT token address later
     address MarketPlaceContractAddress = 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0;
+    // goerli market place 0xE38cfC8E90D92DD66098aAEBDABBE4b4d721365A
+    // hardhat market place 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
     MarketPlaceInterface MarketPlaceContract;
     // OwnerShipTokens ownerShipToken;
 

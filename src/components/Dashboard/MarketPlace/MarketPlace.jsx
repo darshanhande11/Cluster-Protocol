@@ -105,6 +105,7 @@ const MarketPlace = () => {
     })).wait()
   }
 
+// <<<<<<< HEAD
 //   const data = [
 //     {
 //         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
@@ -142,6 +143,45 @@ const MarketPlace = () => {
 //         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
 //     },
 //   ];
+// =======
+//   const data = [
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//   ];
+// >>>>>>> 7c997defd05d0e334ce6bf6c863631ceb20eaf5f
 
   return (
     <div className='mp-div'>

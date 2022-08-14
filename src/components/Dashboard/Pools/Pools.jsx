@@ -1,6 +1,6 @@
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import { FaUsers } from 'react-icons/fa';
-import { List, Space, Button, Modal, Form, Input } from 'antd';
+import { List, Space, Button, Modal, Form, Input, Alert } from 'antd';
 import './Pools.css'
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -21,6 +21,7 @@ const Pools = () => {
   const [funds, setFunds] = useState(0);
   const [currentPoolId, setCurrentPoolId] = useState('');
   let ethProvider = new ethers.providers.Web3Provider(window.ethereum);
+  const [isConsComp, setConsComp] = useState(false);
   let address = GetAccount();
   let contract = GetContract(addresses.fundsManager, FundsManagerContractArtifact.abi);
 
@@ -101,6 +102,8 @@ const Pools = () => {
 
   const makeConsensus = async (poolId, isAgree) => {
     try {
+      setVoted(true);
+      setConsComp(true);
       let consensusTxn = await contract.makeConsensus(poolId, isAgree, { gasLimit: 9000000 });
       await consensusTxn.wait();
     } catch (err) {
@@ -130,8 +133,8 @@ const Pools = () => {
   }).map((_, i) => ({
     poolId: i,
     name: `ant design part ${i}`,
-    funds: '2.03',
-    goal: '10',
+    funds: 11,
+    goal: 10,
     size: i,
   }));
 
@@ -150,8 +153,11 @@ const Pools = () => {
                 <IconText icon={FaUsers} text={item.size} key="list-vertical-users-o" />,
                 <ActionButton text={'Add Funds'} type='primary' onClick={() => { setVis(true); setCurrentPoolId(item.poolId) }} />,
                 // !isConsLive && <ActionButton text={'Start Consensus'} type='primary' onClick={()=>setConsLive(true)} />,
-                (item.funds >= item.goal) && <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(item.poolId, true)} />,
-                (item.funds >= item.goal) && <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(item.poolId, false)} />,
+                (item.funds >= item.goal ) ? <h4 className='pc-consensus-ques'>Do you wanna support buying ? </h4> : '',
+                (item.funds >= item.goal ) ? <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(item.poolId, true)} /> : null,
+                (item.funds >= item.goal ) ? <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(item.poolId, false)} /> : null,
+                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted Yes : 4</h4> : '',
+                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted No : 2</h4> : '',
               ]}
               extra={
                 <img
@@ -162,15 +168,19 @@ const Pools = () => {
                 />
               }
             >
+              {
+                (isConsComp) && <Alert className='pc-alert' message={'Consensus is completed'} type='success' showIcon />
+              }
               <List.Item.Meta
                 title={<Link className='pc-heading' to={`/pools/${item.poolId}`}>{item.name}</Link>}
-              />
+                />
               {item.funds + ' ETH / ' + item.goal + ' ETH'}
             </List.Item>
           )}
         />
         <Modal 
           title="Add Funds"
+          className='add-funds-modal'
           visible={isVis}
           onOk={() => contributeFundsToPool()}
           onCancel={() => { setCurrentPoolId(''); setVis(false) }}

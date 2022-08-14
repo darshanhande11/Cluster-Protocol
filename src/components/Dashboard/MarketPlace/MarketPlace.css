@@ -40,6 +40,7 @@
 }
 .mp-card {
     width: 80%;
+    max-width: 25vw;
     margin: 0;
     padding: 0;
     background-color: rgb(48, 49, 51);

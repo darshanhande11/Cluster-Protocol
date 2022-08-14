@@ -77,3 +77,22 @@
 .ant-modal-close:hover {
     color: rgb(233, 99, 99);
 }
+.pc-consensus-ques {
+    color: white;
+    font-family: 'ManropeMedium';
+}
+.pc-consensus-data {
+    color: white;
+    font-family: 'ManropeMedium';
+    margin-top: 3vh;
+}
+.pc-alert {
+    margin-top: 1vh;
+    margin-bottom: 2.5vh;
+    background-color: transparent;
+    border-radius: 0.5vw;
+}
+.ant-alert-message {
+    font-family: 'ManropeMedium';
+    color: #ffff;
+}

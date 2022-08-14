@@ -39,15 +39,10 @@
     background-color: rgb(48, 49, 51);
 }
 .mp-card {
-/* <<<<<<< HEAD
-    width: 18vw;
-    height: 70vh;
-======= */
     width: 80%;
     margin: 0;
     padding: 0;
     background-color: rgb(48, 49, 51);
-/* >>>>>>> d24bfe1bbe77a955ea94cd01256424fa22012359 */
 }
 .mp-card-price {
     margin: 1vh 0;

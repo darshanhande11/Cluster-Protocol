@@ -5,6 +5,7 @@ import FundsManagerContractArtifact from '../../../Ethereum/FundsManager.json'
 import GetAccount from '../../../hooks/GetAccount.js'
 import GetContract from '../../../hooks/GetContract';
 import addresses from '../../../config'
+import { ethers } from 'ethers'
 
 const CreatePools = () => {
 
@@ -19,6 +20,11 @@ const CreatePools = () => {
     collectionAddress: ''
   })
 
+  // useEffect(async () => {
+  //   const provider = ethers.getDefaultProvider();
+  //   const balance = await provider.getBalance("0x1613beB3B2C4f22Ee086B2b38C1476A3cE7f78E8");
+  //   console.log(" this is balane ", balance);    
+  // }, [])
   const getId = (length) => {
     var result = '';
     var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';

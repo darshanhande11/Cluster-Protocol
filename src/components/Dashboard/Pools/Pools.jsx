@@ -44,9 +44,6 @@ const Pools = () => {
       let allUserPools = [];
       for (let i = 0; i < userPoolIds.length; i++) {
         let pool = await contract.pools(userPoolIds[i]);
-        // allUserPools.push(pool);
-        // console.log(" this is pool ", pool);
-        // console.log(" these are pool funds ", parseInt(pool.funds._hex));
         if (await isUserPool(pool)) {
           allUserPools.push({
             goal: parseInt(pool.fundGoal._hex),
@@ -58,7 +55,7 @@ const Pools = () => {
             poolId: pool.poolId,
             collectionAddress: pool.collectionAddress,
             tokenId: parseInt(pool.tokenId._hex),
-            contractInstance: new ethers.Contract("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", FakeItTokenContractArtifact.abi, ethProvider.getSigner(0))
+            contractInstance: new ethers.Contract(pool.collectionAddress, FakeItTokenContractArtifact.abi, ethProvider.getSigner(0))
           })
         }
       }
@@ -104,7 +101,7 @@ const Pools = () => {
 
   const makeConsensus = async (poolId, isAgree) => {
     try {
-      let consensusTxn = await contract.makeConsensus(poolId, isAgree);
+      let consensusTxn = await contract.makeConsensus(poolId, isAgree, { gasLimit: 9000000 });
       await consensusTxn.wait();
     } catch (err) {
       console.log(err.message);
@@ -145,7 +142,7 @@ const Pools = () => {
         <List
           itemLayout="vertical"
           size="large"
-          dataSource={data}
+          dataSource={userPools}
           renderItem={(item) => (
             <List.Item
               key={item.poolId}
@@ -153,8 +150,8 @@ const Pools = () => {
                 <IconText icon={FaUsers} text={item.size} key="list-vertical-users-o" />,
                 <ActionButton text={'Add Funds'} type='primary' onClick={() => { setVis(true); setCurrentPoolId(item.poolId) }} />,
                 // !isConsLive && <ActionButton text={'Start Consensus'} type='primary' onClick={()=>setConsLive(true)} />,
-                (item.funds >= item.goal) && <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(true)} />,
-                (item.funds >= item.goal) && <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(false)} />,
+                (item.funds >= item.goal) && <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(item.poolId, true)} />,
+                (item.funds >= item.goal) && <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(item.poolId, false)} />,
               ]}
               extra={
                 <img

@@ -9,7 +9,7 @@ contract MarketPlaceInterface {
 
 contract FundsManager {
     // below is DAI token address for now but will be replace with FakeItNFT token address later
-    address MarketPlaceContractAddress = 0xffe9330a68e7F43b8146Ac235eE3c809A5298B43;
+    address MarketPlaceContractAddress = 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0;
     MarketPlaceInterface MarketPlaceContract;
     // OwnerShipTokens ownerShipToken;
 
@@ -71,12 +71,12 @@ contract FundsManager {
 
     function makeConsensus(string memory _poolId, bool _isAgree) external {
         if(_isAgree) {
-            pools[_poolId].positiveCount++; 
+            pools[_poolId].positiveCount = pools[_poolId].positiveCount + 1; 
             if(pools[_poolId].positiveCount > (pools[_poolId].poolSize / 2)) {
                 buyNFT(_poolId);
             }
         } else {
-            pools[_poolId].negativeCount++; 
+            pools[_poolId].negativeCount = pools[_poolId].negativeCount + 1; 
         }
     }
     

@@ -105,43 +105,43 @@ const MarketPlace = () => {
     })).wait()
   }
 
-  const data = [
-    {
-        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-    {
-        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-    {
-        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-    {
-        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-    {
-        uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-  ];
+//   const data = [
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//   ];
 
   return (
     <div className='mp-div'>
@@ -149,14 +149,11 @@ const MarketPlace = () => {
         <button onClick={() => mintNFT()}> mint </button>
         <div className='mp-grid-div'>
             {
-                data.map((item, index) => {
+                tokens.map((item, index) => {
                     return (
                         <Card
                             key={index}
-                            cover={<img style={{ width: "10vw", height: "20vw", margin: "auto" }} src={item.uri} alt={item.name} className='mp-cover-img' />}
-                            // actions={[
-                            //     // <ActionButton text={'Buy'} itemId = {index} />,
-                            // ]}
+                            cover={<img src={item.uri} alt={item.name} className='mp-cover-img' />}
                             className='mp-card'
                         >
                             <h3 className='mp-card-heading'>{item.tagline}</h3>

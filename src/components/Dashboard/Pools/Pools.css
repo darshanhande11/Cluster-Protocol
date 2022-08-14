@@ -8,6 +8,7 @@
     font-size: 2rem;
     font-family: 'ManropeBold';
     text-align: center;
+    color: #ffff;
 }
 .pools-list-par {
     width: 85%;
@@ -23,4 +24,26 @@
     background-color: #5dad5d !important;
     color: white;
     border-color: #5dad5d;
+}
+.ant-list-item {
+    background-color: rgb(48, 49, 51);
+    color: #ffff;
+    border-radius: 0.5vw;
+    border: 0 !important;
+    margin-bottom: 4vh;
+    box-shadow: 5px 5px 10px #adace7d3;
+}
+.ant-list-item:hover {
+    transform: scale(1.02);
+}
+.pc-heading {
+    font-family: 'ManropeBold';
+    font-size: 1rem;
+    color: #ffff !important;
+}
+.pc-heading:hover {
+    color: #5dad5d !important;
+}
+.ant-space-item {
+    color: #ffff;
 }

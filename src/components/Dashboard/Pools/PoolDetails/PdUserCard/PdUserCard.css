@@ -2,9 +2,21 @@
     border-radius: 0.5vw;
     margin: 2vh;
     border: 1px solid rgb(78, 230, 179);
+    background-color: rgb(48, 49, 51);
+    color: #ffff !important;
+    box-shadow: 1px 1px 10px rgba(143, 140, 140, 0.74);;
 }
 .pd-card:hover {
-    transform: scale(1.1);
+    transform: scale(1.03);
     cursor:default;
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+}
+.ant-card-meta-title {
+    font-family: 'ManropeBold';
+    font-size: 1rem;
+    color: #ffff !important;
+}
+.ant-card-meta-description {
+    font-family: 'ManropeRegular';
+    font-size: 0.83rem;
+    color: #ffff !important;
 }

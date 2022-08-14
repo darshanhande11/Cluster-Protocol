@@ -58,12 +58,12 @@ const PoolDetails = () => {
         <img src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png" className='pd-img' />
         <div className='pd-users-div'>
             {
-                // data.map((item) => {
-                    // return <PdUserCard key={item.id} userId={item.id} percentage={item.percentage} address={item.address} />
-                // })
-                poolOwners.map((address, id) => {
-                    return <PdUserCard key={id} userId={id} percentage="20" address={address} />
+                data.map((item) => {
+                    return <PdUserCard key={item.id} userId={item.id} percentage={item.percentage} address={item.address} />
                 })
+                // poolOwners.map((address, id) => {
+                //     return <PdUserCard key={id} userId={id} percentage="20" address={address} />
+                // })
             }
         </div>
     </div>

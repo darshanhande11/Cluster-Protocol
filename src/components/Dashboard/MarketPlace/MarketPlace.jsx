@@ -52,7 +52,7 @@ const MarketPlace = () => {
             },
         });
         console.log(res.data.IpfsHash);
-        await (await fakeItTokenContract.safeMint(userAddress, res.data.IpfsHash)).wait()
+        await (await fakeItTokenContract.safeMint(userAddress, res.data.IpfsHash, { value: ethers.utils.parseEther("10")  })).wait()
         const nftId = await fakeItTokenContract.getTokenCount();
         console.log(" this is nft id ", nftId);
         await(await fakeItTokenContract.setApprovalForAll(addresses.marketPlaceAddress, true)).wait();

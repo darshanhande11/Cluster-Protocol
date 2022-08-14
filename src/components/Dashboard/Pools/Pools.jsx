@@ -37,6 +37,24 @@ const Pools = () => {
       console.log(err.message);
     }
   }
+
+  const getImageUrl = async (collectionAddress, tokenId) => {
+    try {
+            // contractInstance: new ethers.Contract(pool.collectionAddress, FakeItTokenContractArtifact.abi, ethProvider.getSigner(0))
+
+      let contractInstance = new ethers.Contract(collectionAddress, FakeItTokenContractArtifact.abi, ethProvider.getSigner(0));
+      // console.log(" this is called ");
+      console.log(" this is token id and instance ", tokenId +"     " + contractInstance + "    " + collectionAddress);
+      let imageUrl = await contractInstance.tokenURI(tokenId);
+      console.log(" this is image url ", imageUrl);
+      let getNFTMetaData = await Axios.get(imageUrl);
+      console.log("nft meta data ", getNFTMetaData.data.uri);
+      return getNFTMetaData.data.uri;
+    } catch (err) {
+      console.log(" this is err message ", err.message);
+    }
+  }
+
   const getUserPools = async () => {
     console.log(" this is address and contract ", typeof address + " " + contract);
     try {
@@ -56,7 +74,7 @@ const Pools = () => {
             poolId: pool.poolId,
             collectionAddress: pool.collectionAddress,
             tokenId: parseInt(pool.tokenId._hex),
-            contractInstance: new ethers.Contract(pool.collectionAddress, FakeItTokenContractArtifact.abi, ethProvider.getSigner(0))
+            imageUrl: await getImageUrl(pool.collectionAddress, pool.tokenId)
           })
         }
       }
@@ -111,19 +129,7 @@ const Pools = () => {
     }
   }
 //! Don't know why the imageUrl is not getting updated while rendering
-  const getImageUrl = async (tokenId, contractInstance) => {
-    try {
-      console.log(" this is called ");
-      console.log(" this is token id and instance ", tokenId +"     " + contractInstance);
-      let imageUrl = await contractInstance.tokenURI(tokenId);
-      console.log(" this is image url ", imageUrl);
-      let getNFTMetaData = await Axios.get(imageUrl);
-      console.log("nft meta data ", getNFTMetaData.data.uri);
-      return getNFTMetaData.data.uri;
-    } catch (err) {
-      console.log(" this is err message ", err.message);
-    }
-  }
+
 
   const [isConsLive, setConsLive] = useState(false);
   const [isVoted, setVoted] = useState(false);
@@ -156,20 +162,20 @@ const Pools = () => {
                 (item.funds >= item.goal ) ? <h4 className='pc-consensus-ques'>Do you wanna support buying ? </h4> : '',
                 (item.funds >= item.goal ) ? <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(item.poolId, true)} /> : null,
                 (item.funds >= item.goal ) ? <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(item.poolId, false)} /> : null,
-                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted Yes : 4</h4> : '',
-                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted No : 2</h4> : '',
+                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted Yes : {item.positive} </h4> : '',
+                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted No : {item.negate} </h4> : '',
               ]}
               extra={
                 <img
                   width={272}
                   height={180}
                   alt="logo"
-                  src={getImageUrl(item.tokenId, item.contractInstance)}
+                  src={item.imageUrl}
                 />
               }
             >
               {
-                (isConsComp) && <Alert className='pc-alert' message={'Consensus is completed'} type='success' showIcon />
+                ((item.positive + item.negate) === item.size) && <Alert className='pc-alert' message={'Consensus is completed'} type='success' showIcon />
               }
               <List.Item.Meta
                 title={<Link className='pc-heading' to={`/pools/${item.poolId}`}>{item.name}</Link>}

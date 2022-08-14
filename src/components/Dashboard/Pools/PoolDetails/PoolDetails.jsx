@@ -8,13 +8,15 @@ import addresses from '../../../../config';
 import FakeItTokenContractArtifact from '../../../../Ethereum/FakeIt.json'
 import { ethers } from 'ethers';
 import Axios from 'axios'
+import OwnerShipTokenArtifact from '../../../../Ethereum/OwnerShipTokens.json'
 
 const PoolDetails = () => {
-
+    // balanceOf(address account
   let { poolId } = useParams();
   let contract = GetContract(addresses.fundsManager, FundsManagerArtifactContract.abi);
 //   let fakeItTokenContract = GetContract()
   const [poolOwners, setPoolOwners] = useState([]);
+  const [poolTokenContract, setPoolTokenContract] = useState(null);
   const [poolTokenAddress, setPoolTokenAddress] = useState('');
   const [collectionAddress, setCollectionAddress] = useState('');
   const [collectionContract, setCollectionContract] = useState(null);
@@ -24,19 +26,23 @@ const PoolDetails = () => {
   const getPoolOwners = async () => {
     try {
         let poolOwners = await contract.getPoolOwners(poolId);
-        console.log("these are pool owners ", poolOwners);
+        // console.log("these are pool owners ", poolOwners);
         setPoolOwners(poolOwners);
         let poolData = await contract.pools(poolId);
+        // console.log(" this is whole pool data ", poolData);
         setPoolTokenAddress(poolData.ownerShipTokenAddress)
+        let poolContract = new ethers.Contract(poolData.ownerShipTokenAddress, OwnerShipTokenArtifact.abi, ethProvider.getSigner(0))
         setCollectionAddress(poolData.collectionAddress);
-        console.log(poolData.collectionAddress);
+        console.log(" this is poool contract ", poolContract);
+        setPoolTokenContract(poolContract);
+        // console.log(poolData.collectionAddress);
         let fakeItTokenContract = new ethers.Contract(poolData.collectionAddress, FakeItTokenContractArtifact.abi, ethProvider.getSigner(0))
         setCollectionContract(fakeItTokenContract);
-        console.log(poolData.tokenId)
+        // console.log(poolData.tokenId)
         let ipfsUri = await fakeItTokenContract.tokenURI(poolData.tokenId);
-        console.log(ipfsUri);
+        // console.log(ipfsUri);
         let imageUri = await Axios.get(ipfsUri);
-        console.log(imageUri);
+        // console.log(imageUri);
         setImageUri(imageUri.data.uri);
     } catch (err) {
         console.log(err.message);
@@ -45,6 +51,20 @@ const PoolDetails = () => {
   useEffect(() => {
     getPoolOwners();
   }, [])
+
+  const tokenBalance = async (userAddress) => {
+    console.log(" this is not alling ");
+    try {
+        if(poolTokenContract) {
+            let userTokenBalance = await poolTokenContract.balanceOf(userAddress);
+            console.log("balance ", userTokenBalance);
+            console.log(" this is user balance ", parseInt(userTokenBalance._hex));
+            return parseInt(userTokenBalance._hex);
+        }
+    } catch (err) {
+        console.log(err.message);
+    }
+  }
 
   const data = [
     {
@@ -82,7 +102,7 @@ const PoolDetails = () => {
                     // return <PdUserCard key={item.id} userId={item.id} percentage={item.percentage} address={item.address} />
                 // })
                 poolOwners.map((address, id) => {
-                    return <PdUserCard key={id} userId={id} percentage="20" address={address} />
+                    return <PdUserCard key={id} poolId={poolId} userId={id} percentage="20" balance={(address) => tokenBalance(address)} address={address} />
                 })
             }
         </div>

@@ -108,6 +108,16 @@ const Pools = () => {
   const [isConsLive, setConsLive] = useState(false);
   const [isVoted, setVoted] = useState(false);
 
+  const data = Array.from({
+    length: 23,
+  }).map((_, i) => ({
+    poolId: i,
+    name: `ant design part ${i}`,
+    funds: '2.03',
+    goal: '10',
+    size: i,
+  }));
+
   return (
     <div className='pools-div'> 
         <div className='pools-list-par'>
@@ -115,7 +125,7 @@ const Pools = () => {
         <List
           itemLayout="vertical"
           size="large"
-          dataSource={userPools}
+          dataSource={data}
           renderItem={(item) => (
             <List.Item
               key={item.poolId}
@@ -129,13 +139,14 @@ const Pools = () => {
               extra={
                 <img
                   width={272}
+                  height={180}
                   alt="logo"
                   src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
                 />
               }
             >
               <List.Item.Meta
-                title={<Link to={`/pools/${item.poolId}`}>{item.name}</Link>}
+                title={<Link className='pc-heading' to={`/pools/${item.poolId}`}>{item.name}</Link>}
               />
               {item.funds + ' ETH / ' + item.goal + ' ETH'}
             </List.Item>

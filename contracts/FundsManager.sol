@@ -3,14 +3,14 @@ pragma solidity ^0.8.4;
 
 import "./OwnerShipToken.sol";
 
-contract MarketPlace {
+contract MarketPlaceInterface {
     function purchaseItem(uint _itemId) external payable {}
 }
 
 contract FundsManager {
     // below is DAI token address for now but will be replace with FakeItNFT token address later
     address MarketPlaceContractAddress = 0xffe9330a68e7F43b8146Ac235eE3c809A5298B43;
-    MarketPlace MarketPlaceContract;
+    MarketPlaceInterface MarketPlaceContract;
     // OwnerShipTokens ownerShipToken;
 
     struct pool {
@@ -26,13 +26,14 @@ contract FundsManager {
         mapping(address => uint256) ownerShips;
         OwnerShipTokens OwnerShipTokenContract;
         uint256 tokenId;
+        address collectionAddress;
     }
 
     mapping(string => pool) public pools;
     mapping(address => string[]) public poolOwners;
     string[] poolIds;
 
-    function createPool(string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal, uint256 _tokenId) external {
+    function createPool(string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal, uint256 _tokenId, address _collectionAddress) external {
         pools[_poolId].poolName = _poolName;
         pools[_poolId].poolSize = _poolSize;
         for(uint i=0;i<_poolSize; i++) {
@@ -43,6 +44,7 @@ contract FundsManager {
         poolIds.push(_poolId);
         pools[_poolId].poolId = _poolId;
         pools[_poolId].tokenId = _tokenId;
+        pools[_poolId].collectionAddress = _collectionAddress;
     }
 
     function contributeFunds(string memory _poolId) external payable {
@@ -54,7 +56,7 @@ contract FundsManager {
     // making the below function public for now for testing purposes
      function buyNFT(string memory _poolId) private {
         // buy NFT and mint the ERC20 tokens to user
-        MarketPlaceContract = MarketPlace(MarketPlaceContractAddress);
+        MarketPlaceContract = MarketPlaceInterface(MarketPlaceContractAddress);
         MarketPlaceContract.purchaseItem{ value: 1000000000000000000 }(pools[_poolId].tokenId);
         OwnerShipTokens _tokenAddress =  new OwnerShipTokens(_poolId, _poolId);   
         pools[_poolId].ownerShipTokenAddress = _tokenAddress;

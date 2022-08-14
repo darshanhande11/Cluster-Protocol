@@ -11,6 +11,8 @@ import FundsManagerContractArtifact from '../../../Ethereum/FundsManager.json'
 import { ethers } from 'ethers';
 import addresses from '../../../config';
 import { Link } from 'react-router-dom';
+import FakeItTokenContractArtifact from '../../../Ethereum/FakeIt.json'
+import Axios from 'axios'
 
 const Pools = () => {
   const [isVis, setVis] = useState(false);
@@ -18,6 +20,7 @@ const Pools = () => {
   const [userPools, setUserPools] = useState([]);
   const [funds, setFunds] = useState(0);
   const [currentPoolId, setCurrentPoolId] = useState('');
+  let ethProvider = new ethers.providers.Web3Provider(window.ethereum);
   let address = GetAccount();
   let contract = GetContract(addresses.fundsManager, FundsManagerContractArtifact.abi);
 
@@ -52,7 +55,10 @@ const Pools = () => {
             positive: parseInt(pool.positiveCount._hex),
             name: pool.poolName,
             size: parseInt(pool.poolSize._hex),
-            poolId: pool.poolId
+            poolId: pool.poolId,
+            collectionAddress: pool.collectionAddress,
+            tokenId: parseInt(pool.tokenId._hex),
+            contractInstance: new ethers.Contract("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", FakeItTokenContractArtifact.abi, ethProvider.getSigner(0))
           })
         }
       }
@@ -65,7 +71,7 @@ const Pools = () => {
 
   useEffect(() => {
     getUserPools();
-  }, [])
+  }, [address])
 
   const addFunds = () => {
     setVis(false);
@@ -104,6 +110,20 @@ const Pools = () => {
       console.log(err.message);
     }
   }
+//! Don't know why the imageUrl is not getting updated while rendering
+  const getImageUrl = async (tokenId, contractInstance) => {
+    try {
+      console.log(" this is called ");
+      console.log(" this is token id and instance ", tokenId +"     " + contractInstance);
+      let imageUrl = await contractInstance.tokenURI(tokenId);
+      console.log(" this is image url ", imageUrl);
+      let getNFTMetaData = await Axios.get(imageUrl);
+      console.log("nft meta data ", getNFTMetaData.data.uri);
+      return getNFTMetaData.data.uri;
+    } catch (err) {
+      console.log(" this is err message ", err.message);
+    }
+  }
 
   const [isConsLive, setConsLive] = useState(false);
   const [isVoted, setVoted] = useState(false);
@@ -130,7 +150,7 @@ const Pools = () => {
                 <img
                   width={272}
                   alt="logo"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                  src={getImageUrl(item.tokenId, item.contractInstance)}
                 />
               }
             >

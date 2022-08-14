@@ -19,7 +19,8 @@
     padding: 3vh 0;
 }
 .mp-card {
-    width: 80%;
+    width: 18vw;
+    height: 70vh;
 }
 .mp-card-price {
     margin: 1vh 0;

@@ -135,8 +135,9 @@ const Pools = () => {
       if(!isUserVoted) {
         let consensusTxn = await contract.makeConsensus(poolId, isAgree, { gasLimit: 9000000 });
         await consensusTxn.wait();
+        getUserPools();
         setLoadStatus(false);
-        message.error("Vote counted successfully");
+        message.success("Vote counted successfully");
       } else {
         setLoadStatus(false);
         message.error("You already voted to pool");

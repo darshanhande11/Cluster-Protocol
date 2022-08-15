@@ -131,11 +131,20 @@ const Pools = () => {
       setLoadStatus(true);
       setVoted(true);
       setConsComp(true);
-      let consensusTxn = await contract.makeConsensus(poolId, isAgree, { gasLimit: 9000000 });
-      await consensusTxn.wait();
-      setLoadStatus(false);
+      let isUserVoted = await contract.isVoted(poolId);
+      if(!isUserVoted) {
+        let consensusTxn = await contract.makeConsensus(poolId, isAgree, { gasLimit: 9000000 });
+        await consensusTxn.wait();
+        getUserPools();
+        setLoadStatus(false);
+        message.success("Vote counted successfully");
+      } else {
+        setLoadStatus(false);
+        message.error("You already voted to pool");
+      }
     } catch (err) {
       console.log(err.message);
+      message.error("You are not allowed to vote");
     }
   }
 //! Don't know why the imageUrl is not getting updated while rendering

@@ -8,8 +8,13 @@
     color: #fff;
 }
 .mp-cover-img {
-    width: 100%;
-    height: 30vh;
+    width: auto;
+    max-width: 100%;
+    height: 35vh;
+}
+.ant-card-cover {
+    display: flex;
+    justify-content: center;
 }
 .mp-grid-div {
     display: grid;

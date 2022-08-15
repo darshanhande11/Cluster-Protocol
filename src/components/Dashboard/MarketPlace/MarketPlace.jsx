@@ -9,8 +9,10 @@ import FakeItTokenContractArtifact from '../../../Ethereum/FakeIt.json'
 import MarketPlaceContractArtifact from '../../../Ethereum/MarketPlace.json'
 import Axios from 'axios'
 import { ethers } from 'ethers';
+import Loader from '../../../shared/Loader/Loader';
 
 const MarketPlace = () => {
+  const [loadStatus, setLoadStatus] = useState(false);
   let userAddress = GetAccount();
   let fakeItTokenContract = GetContract(addresses.fakeItToken, FakeItTokenContractArtifact.abi);
   let MarketPlaceContract = GetContract(addresses.marketPlaceAddress, MarketPlaceContractArtifact.abi);
@@ -31,6 +33,7 @@ const MarketPlace = () => {
 
   const mintNFT = async () => {
     try {
+        setLoadStatus(true);
         const url = getUrl();
         const imageData = await Axios({
             method: "GET",
@@ -59,6 +62,7 @@ const MarketPlace = () => {
         await(await fakeItTokenContract.setApprovalForAll(addresses.marketPlaceAddress, true,  { gasLimit: 9000000 })).wait();
         const listingPrice = 0.01;
         await(await MarketPlaceContract.makeItem(addresses.fakeItToken, nftId, ethers.utils.parseEther(listingPrice.toString()), { gasLimit: 9000000 })).wait();
+        setLoadStatus(false);
     } catch (err) {
         console.log(err.message);
     }
@@ -66,6 +70,7 @@ const MarketPlace = () => {
 
   const getAllNFTs = async () => {
     try {
+        setLoadStatus(true);
         let allTokens = [];
         let totalNFTCount = await fakeItTokenContract.getTokenCount();
         for(let i=0; i <= totalNFTCount; i++) {
@@ -88,6 +93,7 @@ const MarketPlace = () => {
         }
         console.log(" this is all tokens data ", allTokens);
         setTokens(allTokens);
+        setLoadStatus(false);
     } catch (err) {
         console.log(err.message);
     }
@@ -186,6 +192,8 @@ const MarketPlace = () => {
 
   return (
     <div className='mp-div'>
+        { loadStatus  && <Loader />}
+        {!loadStatus && <>
         <h1 className='mp-heading'>Market Place</h1>
         <button onClick={() => mintNFT()}> mint </button>
         <div className='mp-grid-div'>
@@ -216,6 +224,8 @@ const MarketPlace = () => {
                 })
             }
         </div>
+        </>
+        }
     </div>
   )
 }

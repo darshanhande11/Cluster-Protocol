@@ -9,6 +9,7 @@ import FakeItTokenContractArtifact from '../../../../Ethereum/FakeIt.json'
 import { ethers } from 'ethers';
 import Axios from 'axios'
 import OwnerShipTokenArtifact from '../../../../Ethereum/OwnerShipTokens.json'
+import Loader from '../../../../shared/Loader/Loader';
 
 const PoolDetails = () => {
     // balanceOf(address account
@@ -16,6 +17,7 @@ const PoolDetails = () => {
   let contract = GetContract(addresses.fundsManager, FundsManagerArtifactContract.abi);
 //   let fakeItTokenContract = GetContract()
   const [poolOwners, setPoolOwners] = useState([]);
+  const [loadStatus, setLoadStatus] = useState(false);
   const [poolTokenContract, setPoolTokenContract] = useState(null);
   const [poolTokenAddress, setPoolTokenAddress] = useState('');
   const [collectionAddress, setCollectionAddress] = useState('');
@@ -25,6 +27,7 @@ const PoolDetails = () => {
 //   new ethers.Contract("0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512", FakeItTokenContractArtifact.abi, ethProvider.getSigner(0))
   const getPoolOwners = async () => {
     try {
+        setLoadStatus(true);
         let poolOwners = await contract.getPoolOwners(poolId);
         // console.log("these are pool owners ", poolOwners);
         setPoolOwners(poolOwners);
@@ -44,6 +47,7 @@ const PoolDetails = () => {
         let imageUri = await Axios.get(ipfsUri);
         // console.log(imageUri);
         setImageUri(imageUri.data.uri);
+        setLoadStatus(false);
     } catch (err) {
         console.log(err.message);
     }
@@ -91,6 +95,8 @@ const PoolDetails = () => {
 //   const poolName = 'Pool 1';
   return (
     <div className='pd-div'>
+      {loadStatus && <Loader />}
+      {!loadStatus && <>
         <h1 className='pd-heading'>Ownership Distribution</h1>
         <img 
         src={imageUri}
@@ -106,6 +112,7 @@ const PoolDetails = () => {
                 })
             }
         </div>
+      </>}
     </div>
   )
 }

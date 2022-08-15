@@ -1,6 +1,6 @@
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import { FaUsers } from 'react-icons/fa';
-import { List, Space, Button, Modal, Form, Input, Alert } from 'antd';
+import { List, Space, Button, Modal, Form, Input, Alert, message } from 'antd';
 import './Pools.css'
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -13,6 +13,7 @@ import addresses from '../../../config';
 import { Link } from 'react-router-dom';
 import FakeItTokenContractArtifact from '../../../Ethereum/FakeIt.json'
 import Axios from 'axios'
+import Loader from '../../../shared/Loader/Loader';
 
 const Pools = () => {
   const [isVis, setVis] = useState(false);
@@ -20,6 +21,8 @@ const Pools = () => {
   const [userPools, setUserPools] = useState([]);
   const [funds, setFunds] = useState(0);
   const [currentPoolId, setCurrentPoolId] = useState('');
+  const [loadStatus, setLoadStatus] = useState(false);
+
   let ethProvider = new ethers.providers.Web3Provider(window.ethereum);
   const [isConsComp, setConsComp] = useState(false);
   let address = GetAccount();
@@ -58,6 +61,7 @@ const Pools = () => {
   const getUserPools = async () => {
     console.log(" this is address and contract ", typeof address + " " + contract);
     try {
+      setLoadStatus(true);
       let userPoolIds = await contract.getUserPools();
       console.log(" this are user pool ids ", userPoolIds);
       let allUserPools = [];
@@ -80,6 +84,7 @@ const Pools = () => {
       }
       console.log(" this is all user pools ", allUserPools);
       setUserPools(allUserPools);
+      setLoadStatus(false);
     } catch (err) {
       console.log(err.message);
     }
@@ -108,11 +113,14 @@ const Pools = () => {
 
   const contributeFundsToPool = async () => {
     try {
+      setLoadStatus(true);
       console.log(" this is current pool id ", currentPoolId);
       let contributeTxn = await contract.contributeFunds(currentPoolId, { value: ethers.utils.parseEther(funds) });
       await contributeTxn.wait();
       setVis(false);
       getUserPools();
+      setLoadStatus(false);
+      message.success("Contribution to pool done successfully ");
     } catch (err) {
       console.log(err.message);
     }
@@ -120,10 +128,12 @@ const Pools = () => {
 
   const makeConsensus = async (poolId, isAgree) => {
     try {
+      setLoadStatus(true);
       setVoted(true);
       setConsComp(true);
       let consensusTxn = await contract.makeConsensus(poolId, isAgree, { gasLimit: 9000000 });
       await consensusTxn.wait();
+      setLoadStatus(false);
     } catch (err) {
       console.log(err.message);
     }
@@ -145,7 +155,9 @@ const Pools = () => {
   }));
 
   return (
-    <div className='pools-div'> 
+    <div className='pools-div'>
+      {loadStatus && <Loader />}
+      {!loadStatus && <>      
         <div className='pools-list-par'>
         <h1 className='pools-heading'>Your Pools</h1>
         <List
@@ -204,6 +216,7 @@ const Pools = () => {
           </Form>
         </Modal>
       </div>
+      </>} 
     </div>
   )
 }

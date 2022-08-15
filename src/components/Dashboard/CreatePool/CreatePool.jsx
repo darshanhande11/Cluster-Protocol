@@ -6,6 +6,7 @@ import GetAccount from '../../../hooks/GetAccount.js'
 import GetContract from '../../../hooks/GetContract';
 import addresses from '../../../config'
 import { ethers } from 'ethers'
+import Loader from '../../../shared/Loader/Loader'
 
 const CreatePools = () => {
 
@@ -19,6 +20,7 @@ const CreatePools = () => {
     tokenId: 0,
     collectionAddress: ''
   })
+  const [loadStatus, setLoadStatus] = useState(false);
 
   // useEffect(async () => {
   //   const provider = ethers.getDefaultProvider();
@@ -59,10 +61,13 @@ const CreatePools = () => {
     try {
       console.log(" this is called ");
       if (contract) {
+         setLoadStatus(true);
         // string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal
         console.log(" this is updated pool data " ,poolData);
         let createPoolTxn = await contract.createPool(getId(5), poolData.title, poolData.mapValue.length, poolData.addresses, ethers.utils.parseEther(poolData.funds), poolData.tokenId, poolData.address);
         await createPoolTxn.wait();
+        message.success("Pool created successfully ");
+        setLoadStatus(false);
       } else {
         message.warning('Please connect metamask first');
       }
@@ -89,6 +94,8 @@ const CreatePools = () => {
 
   return (
     <div className='cp-par-div'>
+        {loadStatus && <Loader />}
+        {!loadStatus && <>
       <div className='cp-div'>
         <h1 className='cp-heading'>Create Pool</h1>
         <Form className='cp-form' form={form} layout={'vertical'}
@@ -128,6 +135,7 @@ const CreatePools = () => {
           </Form.Item>
         </Form>
       </div>
+      </>}
     </div>
   )
 }

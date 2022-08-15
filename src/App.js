@@ -16,7 +16,7 @@ import PoolDetails from "./components/Dashboard/Pools/PoolDetails/PoolDetails";
 const { chains, provider } = configureChains(
   [chain.polygonMumbai, chain.ropsten, chain.goerli, chain.hardhat],
   [
-    alchemyProvider({ alchemyId: process.env.REACT_APP_GOERLI_API_URL }),
+    alchemyProvider({ alchemyId: "https://eth-goerli.alchemyapi.io/v2/V5p1PckEwUqIq5s5rA2zvwRKH0V9Hslr" }),
     publicProvider(),
   ]
 );

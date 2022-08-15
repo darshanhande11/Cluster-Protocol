@@ -4,19 +4,24 @@ import './Loader.css'
 
 const Loader = (props) => {
   return (
-    <ThreeCircles
-      className="loader-pos"
-      height={props.height || "100"}
-      width={props.width || "100"}
-      color={props.color ? props.color : "#00BFFF"}
-      wrapperStyle={{}}
-      wrapperClass=""
-      visible={true}
-      ariaLabel="three-circles-rotating"
-      outerCircleColor=""
-      innerCircleColor=""
-      middleCircleColor=""
-     />
+    <div className='loader-div'>
+      <ThreeCircles
+          height={props.height}
+          width={props.width}
+          color={props.color ? props.color : "#00BFFF"}
+          wrapperStyle={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          wrapperClass=""
+          visible={true}
+          ariaLabel="three-circles-rotating"
+          outerCircleColor=""
+          innerCircleColor=""
+          middleCircleColor=""
+      />
+    </div>
   )
 }
 

@@ -163,9 +163,9 @@ const Pools = () => {
   }));
 
   return (
-    loadStatus ? <Loader /> : 
+    loadStatus ? <Loader /> :
     <div className='pools-div'>
-        <div className='pools-list-par'>
+      <div className='pools-list-par'>
         <h1 className='pools-heading'>Your Pools</h1>
         <List
           itemLayout="vertical"

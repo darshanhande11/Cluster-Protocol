@@ -191,7 +191,9 @@ const MarketPlace = () => {
 // >>>>>>> 7c997defd05d0e334ce6bf6c863631ceb20eaf5f
 
   return (
-    loadStatus ? <Loader /> : 
+    loadStatus ?
+    <Loader />
+    :
     <div className='mp-div'>
         <h1 className='mp-heading'>Market Place</h1>
         <button onClick={() => mintNFT()}> mint </button>

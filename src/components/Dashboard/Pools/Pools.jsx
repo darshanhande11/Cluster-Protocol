@@ -155,10 +155,9 @@ const Pools = () => {
   }));
 
   return (
+    loadStatus ? <Loader /> :
     <div className='pools-div'>
-      {loadStatus && <Loader />}
-      {!loadStatus && <>      
-        <div className='pools-list-par'>
+      <div className='pools-list-par'>
         <h1 className='pools-heading'>Your Pools</h1>
         <List
           itemLayout="vertical"
@@ -216,7 +215,6 @@ const Pools = () => {
           </Form>
         </Modal>
       </div>
-      </>} 
     </div>
   )
 }

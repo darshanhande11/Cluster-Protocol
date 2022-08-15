@@ -19,10 +19,10 @@ const PdUserCard = (props) => {
     <Card className='pd-card'>
         <Meta 
             avatar={<Avatar src={`https://robohash.org/${props.address}`} />}
-            title={`${props.percentage} %`}
+            title={"Balance: " + (isNaN(userBalance) ? "0" : userBalance) + " " + props.poolId}
             description={props.address}
         />
-        Balance: {userBalance} {props.poolId}
+        
     </Card>
   )
 }

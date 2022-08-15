@@ -9,7 +9,7 @@ contract MarketPlaceInterface {
 
 contract FundsManager {
     // below is DAI token address for now but will be replace with FakeItNFT token address later
-    address MarketPlaceContractAddress = 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0;
+    address MarketPlaceContractAddress = 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512;
     // goerli market place 0xE38cfC8E90D92DD66098aAEBDABBE4b4d721365A
     // hardhat market place 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
     MarketPlaceInterface MarketPlaceContract;
@@ -59,15 +59,20 @@ contract FundsManager {
      function buyNFT(string memory _poolId) private {
         // buy NFT and mint the ERC20 tokens to user
         MarketPlaceContract = MarketPlaceInterface(MarketPlaceContractAddress);
-        MarketPlaceContract.purchaseItem{ value: 1000000000000000000 }(pools[_poolId].tokenId);
+        // the value is the price of NFT currently it is fix to 10eth so every pool has value o 10eth
+        // MarketPlaceContract.purchaseItem{ value: 10000000000000000000 }(pools[_poolId].tokenId);
+        // for goerli contract playing safe transfering only 0.01
+        // MarketPlaceContract.purchaseItem{ value: 10000000 * 1000000000000 }(pools[_poolId].tokenId);
+        MarketPlaceContract.purchaseItem(pools[_poolId].tokenId + 1);
         OwnerShipTokens _tokenAddress =  new OwnerShipTokens(_poolId, _poolId);   
         pools[_poolId].ownerShipTokenAddress = _tokenAddress;
         pools[_poolId].OwnerShipTokenContract = OwnerShipTokens(_tokenAddress);  
 
-        // let say currently the prize of NFT is 1000 USD and ownership token is pecked to 1 USD - 1 OWT
+        // for simplicity for now consider 1eth = 1token
         for(uint i=0; i < pools[_poolId].owners.length; i++) {
-            uint256 _nftShare = (pools[_poolId].ownerShips[msg.sender] / pools[_poolId].fundGoal) * 1000000000000000000;
-            pools[_poolId].OwnerShipTokenContract.transfer(pools[_poolId].owners[i], 1000000000000000000);
+            // below one will be used for hardhat contract
+            uint256 _nftShare = (pools[_poolId].ownerShips[pools[_poolId].owners[i]] / pools[_poolId].fundGoal) * 1000000000000000000;
+            pools[_poolId].OwnerShipTokenContract.transfer(pools[_poolId].owners[i], _nftShare);
         }
     }
 

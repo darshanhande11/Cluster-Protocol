@@ -52,10 +52,11 @@ const MarketPlace = () => {
             },
         });
         console.log(res.data.IpfsHash);
-        await (await fakeItTokenContract.safeMint(userAddress, res.data.IpfsHash, { value: ethers.utils.parseEther("10")  })).wait()
+        await (await fakeItTokenContract.safeMint(userAddress, res.data.IpfsHash, { value: ethers.utils.parseEther("0.01"), gasLimit: 9000000  })).wait()
         const nftId = await fakeItTokenContract.getTokenCount();
+        // await nftId.wait();
         console.log(" this is nft id ", nftId);
-        await(await fakeItTokenContract.setApprovalForAll(addresses.marketPlaceAddress, true)).wait();
+        await(await fakeItTokenContract.setApprovalForAll(addresses.marketPlaceAddress, true,  { gasLimit: 9000000 })).wait();
         const listingPrice = 0.01;
         await(await MarketPlaceContract.makeItem(addresses.fakeItToken, nftId, ethers.utils.parseEther(listingPrice.toString()), { gasLimit: 9000000 })).wait();
     } catch (err) {

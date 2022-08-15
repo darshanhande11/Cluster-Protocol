@@ -65,7 +65,7 @@ const Pools = () => {
         let pool = await contract.pools(userPoolIds[i]);
         if (await isUserPool(pool)) {
           allUserPools.push({
-            goal: parseInt(pool.fundGoal._hex),
+            goal: parseInt(pool.fundGoal._hex) / 10 ** 18,
             funds: parseInt(pool.funds._hex) / 10 ** 18,
             negate: parseInt(pool.negativeCount._hex),
             positive: parseInt(pool.positiveCount._hex),

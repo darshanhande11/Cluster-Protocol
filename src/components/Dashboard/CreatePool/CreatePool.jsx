@@ -61,7 +61,7 @@ const CreatePools = () => {
       if (contract) {
         // string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal
         console.log(" this is updated pool data " ,poolData);
-        let createPoolTxn = await contract.createPool(getId(5), poolData.title, poolData.mapValue.length, poolData.addresses, poolData.funds, poolData.tokenId, poolData.address);
+        let createPoolTxn = await contract.createPool(getId(5), poolData.title, poolData.mapValue.length, poolData.addresses, ethers.utils.parseEther(poolData.funds), poolData.tokenId, poolData.address);
         await createPoolTxn.wait();
       } else {
         message.warning('Please connect metamask first');

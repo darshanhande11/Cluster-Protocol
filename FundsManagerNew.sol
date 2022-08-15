@@ -29,7 +29,6 @@ contract FundsManager {
         OwnerShipTokens OwnerShipTokenContract;
         uint256 tokenId;
         address collectionAddress;
-        mapping(address => uint) voters;
     }
 
     mapping(string => pool) public pools;
@@ -41,8 +40,6 @@ contract FundsManager {
         pools[_poolId].poolSize = _poolSize;
         for(uint i=0;i<_poolSize; i++) {
             pools[_poolId].owners.push(_owners[i]);
-            // 2 means they are part of voting mechanism
-            pools[_poolId].voters[_owners[i]] = 2;
         }
         pools[_poolId].fundGoal = _fundsGoal;
         poolOwners[msg.sender].push(_poolId);
@@ -80,7 +77,6 @@ contract FundsManager {
     }
 
     function makeConsensus(string memory _poolId, bool _isAgree) external {
-        require(pools[_poolId].voters[msg.sender] == 2, "You are not authorized to vote");
         if(_isAgree) {
             pools[_poolId].positiveCount = pools[_poolId].positiveCount + 1; 
             if(pools[_poolId].positiveCount > (pools[_poolId].poolSize / 2)) {
@@ -89,16 +85,6 @@ contract FundsManager {
         } else {
             pools[_poolId].negativeCount = pools[_poolId].negativeCount + 1; 
         }
-        // 1 means unhone vote kardiya
-        pools[_poolId].voters[msg.sender] = 1;
-    }
-
-    function isVoted(string memory _poolId) external view returns (bool) {
-        require(pools[_poolId].voters[msg.sender] != 0, "You are not authorized to vote");
-        if(pools[_poolId].voters[msg.sender] == 1) {
-            return true; 
-        }
-        return false;
     }
     
     function getUserPools() external view returns (string[] memory) {
@@ -113,3 +99,5 @@ contract FundsManager {
         
     }
 }
+
+

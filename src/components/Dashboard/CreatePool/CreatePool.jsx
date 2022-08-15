@@ -64,7 +64,7 @@ const CreatePools = () => {
          setLoadStatus(true);
         // string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal
         console.log(" this is updated pool data " ,poolData);
-        let createPoolTxn = await contract.createPool(getId(5), poolData.title, poolData.mapValue.length, poolData.addresses, ethers.utils.parseEther(poolData.funds), poolData.tokenId, poolData.address);
+        let createPoolTxn = await contract.createPool(getId(5), poolData.title, poolData.mapValue.length, poolData.addresses, ethers.utils.parseEther("0.01"), poolData.tokenId, poolData.address);
         await createPoolTxn.wait();
         message.success("Pool created successfully ");
         setLoadStatus(false);
@@ -93,9 +93,8 @@ const CreatePools = () => {
   const [form] = Form.useForm();
 
   return (
+    loadStatus ? <Loader /> : 
     <div className='cp-par-div'>
-        {loadStatus && <Loader />}
-        {!loadStatus && <>
       <div className='cp-div'>
         <h1 className='cp-heading'>Create Pool</h1>
         <Form className='cp-form' form={form} layout={'vertical'}
@@ -115,9 +114,6 @@ const CreatePools = () => {
               })
             }} />
           </Form.Item>
-          <Form.Item className='cp-form-label' label="Total Funds Required" name="Total Funds Required" rules={[{ required: true }]} >
-            <Input type='number' placeholder='in ether' name='funds' onChange={(e) => handlePoolChange(e)} />
-          </Form.Item>
           <Form.Item className='cp-form-label' label="Token Id of NFT needed" name="Token Id of NFT needed" rules={[{ required: true }]} >
             <Input type='number' placeholder='int' name='tokenId' onChange={(e) => handlePoolChange(e)} />
           </Form.Item>
@@ -135,7 +131,6 @@ const CreatePools = () => {
           </Form.Item>
         </Form>
       </div>
-      </>}
     </div>
   )
 }

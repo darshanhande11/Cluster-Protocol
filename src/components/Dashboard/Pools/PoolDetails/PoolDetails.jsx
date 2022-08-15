@@ -94,9 +94,8 @@ const PoolDetails = () => {
   ];
 //   const poolName = 'Pool 1';
   return (
+    loadStatus ? <Loader /> : 
     <div className='pd-div'>
-      {loadStatus && <Loader />}
-      {!loadStatus && <>
         <h1 className='pd-heading'>Ownership Distribution</h1>
         <img 
         src={imageUri}
@@ -112,7 +111,6 @@ const PoolDetails = () => {
                 })
             }
         </div>
-      </>}
     </div>
   )
 }

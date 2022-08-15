@@ -1,6 +1,6 @@
 // below is hardhat node contract addresses
 const addresses = {
-    "fundsManager": "0xa85233C63b9Ee964Add6F2cffe00Fd84eb32338f",
+    "fundsManager": "0x9E545E3C0baAB3E08CdfD552C960A1050f373042",
     "fakeItToken": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     "marketPlaceAddress": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
 }

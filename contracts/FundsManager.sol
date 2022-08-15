@@ -3,14 +3,16 @@ pragma solidity ^0.8.4;
 
 import "./OwnerShipToken.sol";
 
-contract MarketPlace {
+contract MarketPlaceInterface {
     function purchaseItem(uint _itemId) external payable {}
 }
 
 contract FundsManager {
     // below is DAI token address for now but will be replace with FakeItNFT token address later
-    address MarketPlaceContractAddress = 0xffe9330a68e7F43b8146Ac235eE3c809A5298B43;
-    MarketPlace MarketPlaceContract;
+    address MarketPlaceContractAddress = 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512;
+    // goerli market place 0xE38cfC8E90D92DD66098aAEBDABBE4b4d721365A
+    // hardhat market place 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
+    MarketPlaceInterface MarketPlaceContract;
     // OwnerShipTokens ownerShipToken;
 
     struct pool {
@@ -26,13 +28,14 @@ contract FundsManager {
         mapping(address => uint256) ownerShips;
         OwnerShipTokens OwnerShipTokenContract;
         uint256 tokenId;
+        address collectionAddress;
     }
 
     mapping(string => pool) public pools;
     mapping(address => string[]) public poolOwners;
     string[] poolIds;
 
-    function createPool(string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal, uint256 _tokenId) external {
+    function createPool(string memory _poolId, string memory _poolName, uint256 _poolSize , address[] memory _owners, uint256 _fundsGoal, uint256 _tokenId, address _collectionAddress) external {
         pools[_poolId].poolName = _poolName;
         pools[_poolId].poolSize = _poolSize;
         for(uint i=0;i<_poolSize; i++) {
@@ -43,6 +46,7 @@ contract FundsManager {
         poolIds.push(_poolId);
         pools[_poolId].poolId = _poolId;
         pools[_poolId].tokenId = _tokenId;
+        pools[_poolId].collectionAddress = _collectionAddress;
     }
 
     function contributeFunds(string memory _poolId) external payable {
@@ -54,27 +58,32 @@ contract FundsManager {
     // making the below function public for now for testing purposes
      function buyNFT(string memory _poolId) private {
         // buy NFT and mint the ERC20 tokens to user
-        MarketPlaceContract = MarketPlace(MarketPlaceContractAddress);
-        MarketPlaceContract.purchaseItem{ value: 1000000000000000000 }(pools[_poolId].tokenId);
+        MarketPlaceContract = MarketPlaceInterface(MarketPlaceContractAddress);
+        // the value is the price of NFT currently it is fix to 10eth so every pool has value o 10eth
+        // MarketPlaceContract.purchaseItem{ value: 10000000000000000000 }(pools[_poolId].tokenId);
+        // for goerli contract playing safe transfering only 0.01
+        // MarketPlaceContract.purchaseItem{ value: 10000000 * 1000000000000 }(pools[_poolId].tokenId);
+        MarketPlaceContract.purchaseItem(pools[_poolId].tokenId + 1);
         OwnerShipTokens _tokenAddress =  new OwnerShipTokens(_poolId, _poolId);   
         pools[_poolId].ownerShipTokenAddress = _tokenAddress;
         pools[_poolId].OwnerShipTokenContract = OwnerShipTokens(_tokenAddress);  
 
-        // let say currently the prize of NFT is 1000 USD and ownership token is pecked to 1 USD - 1 OWT
+        // for simplicity for now consider 1eth = 1token
         for(uint i=0; i < pools[_poolId].owners.length; i++) {
-            uint256 _nftShare = (pools[_poolId].ownerShips[msg.sender] / pools[_poolId].fundGoal) * 1000000000000000000;
-            pools[_poolId].OwnerShipTokenContract.transfer(pools[_poolId].owners[i], 1000000000000000000);
+            // below one will be used for hardhat contract
+            uint256 _nftShare = (pools[_poolId].ownerShips[pools[_poolId].owners[i]] / pools[_poolId].fundGoal) * 1000000000000000000;
+            pools[_poolId].OwnerShipTokenContract.transfer(pools[_poolId].owners[i], _nftShare);
         }
     }
 
     function makeConsensus(string memory _poolId, bool _isAgree) external {
         if(_isAgree) {
-            pools[_poolId].positiveCount++; 
+            pools[_poolId].positiveCount = pools[_poolId].positiveCount + 1; 
             if(pools[_poolId].positiveCount > (pools[_poolId].poolSize / 2)) {
                 buyNFT(_poolId);
             }
         } else {
-            pools[_poolId].negativeCount++; 
+            pools[_poolId].negativeCount = pools[_poolId].negativeCount + 1; 
         }
     }
     

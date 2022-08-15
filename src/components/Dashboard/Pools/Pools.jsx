@@ -1,6 +1,6 @@
 import { LikeOutlined, MessageOutlined, StarOutlined } from '@ant-design/icons';
 import { FaUsers } from 'react-icons/fa';
-import { List, Space, Button, Modal, Form, Input, Alert } from 'antd';
+import { List, Space, Button, Modal, Form, Input, Alert, message } from 'antd';
 import './Pools.css'
 import React from 'react';
 import { useState, useEffect } from 'react';
@@ -11,6 +11,9 @@ import FundsManagerContractArtifact from '../../../Ethereum/FundsManager.json'
 import { ethers } from 'ethers';
 import addresses from '../../../config';
 import { Link } from 'react-router-dom';
+import FakeItTokenContractArtifact from '../../../Ethereum/FakeIt.json'
+import Axios from 'axios'
+import Loader from '../../../shared/Loader/Loader';
 
 const Pools = () => {
   const [isVis, setVis] = useState(false);
@@ -18,6 +21,9 @@ const Pools = () => {
   const [userPools, setUserPools] = useState([]);
   const [funds, setFunds] = useState(0);
   const [currentPoolId, setCurrentPoolId] = useState('');
+  const [loadStatus, setLoadStatus] = useState(false);
+
+  let ethProvider = new ethers.providers.Web3Provider(window.ethereum);
   const [isConsComp, setConsComp] = useState(false);
   let address = GetAccount();
   let contract = GetContract(addresses.fundsManager, FundsManagerContractArtifact.abi);
@@ -34,31 +40,51 @@ const Pools = () => {
       console.log(err.message);
     }
   }
+
+  const getImageUrl = async (collectionAddress, tokenId) => {
+    try {
+            // contractInstance: new ethers.Contract(pool.collectionAddress, FakeItTokenContractArtifact.abi, ethProvider.getSigner(0))
+
+      let contractInstance = new ethers.Contract(collectionAddress, FakeItTokenContractArtifact.abi, ethProvider.getSigner(0));
+      // console.log(" this is called ");
+      console.log(" this is token id and instance ", tokenId +"     " + contractInstance + "    " + collectionAddress);
+      let imageUrl = await contractInstance.tokenURI(tokenId);
+      console.log(" this is image url ", imageUrl);
+      let getNFTMetaData = await Axios.get(imageUrl);
+      console.log("nft meta data ", getNFTMetaData.data.uri);
+      return getNFTMetaData.data.uri;
+    } catch (err) {
+      console.log(" this is err message ", err.message);
+    }
+  }
+
   const getUserPools = async () => {
     console.log(" this is address and contract ", typeof address + " " + contract);
     try {
+      setLoadStatus(true);
       let userPoolIds = await contract.getUserPools();
       console.log(" this are user pool ids ", userPoolIds);
       let allUserPools = [];
       for (let i = 0; i < userPoolIds.length; i++) {
         let pool = await contract.pools(userPoolIds[i]);
-        // allUserPools.push(pool);
-        // console.log(" this is pool ", pool);
-        // console.log(" these are pool funds ", parseInt(pool.funds._hex));
         if (await isUserPool(pool)) {
           allUserPools.push({
-            goal: parseInt(pool.fundGoal._hex),
+            goal: parseInt(pool.fundGoal._hex) / 10 ** 18,
             funds: parseInt(pool.funds._hex) / 10 ** 18,
             negate: parseInt(pool.negativeCount._hex),
             positive: parseInt(pool.positiveCount._hex),
             name: pool.poolName,
             size: parseInt(pool.poolSize._hex),
-            poolId: pool.poolId
+            poolId: pool.poolId,
+            collectionAddress: pool.collectionAddress,
+            tokenId: parseInt(pool.tokenId._hex),
+            imageUrl: await getImageUrl(pool.collectionAddress, pool.tokenId)
           })
         }
       }
       console.log(" this is all user pools ", allUserPools);
       setUserPools(allUserPools);
+      setLoadStatus(false);
     } catch (err) {
       console.log(err.message);
     }
@@ -66,7 +92,7 @@ const Pools = () => {
 
   useEffect(() => {
     getUserPools();
-  }, [])
+  }, [address])
 
   const addFunds = () => {
     setVis(false);
@@ -87,11 +113,14 @@ const Pools = () => {
 
   const contributeFundsToPool = async () => {
     try {
+      setLoadStatus(true);
       console.log(" this is current pool id ", currentPoolId);
       let contributeTxn = await contract.contributeFunds(currentPoolId, { value: ethers.utils.parseEther(funds) });
       await contributeTxn.wait();
       setVis(false);
       getUserPools();
+      setLoadStatus(false);
+      message.success("Contribution to pool done successfully ");
     } catch (err) {
       console.log(err.message);
     }
@@ -99,14 +128,18 @@ const Pools = () => {
 
   const makeConsensus = async (poolId, isAgree) => {
     try {
+      setLoadStatus(true);
       setVoted(true);
       setConsComp(true);
-      let consensusTxn = await contract.makeConsensus(poolId, isAgree);
+      let consensusTxn = await contract.makeConsensus(poolId, isAgree, { gasLimit: 9000000 });
       await consensusTxn.wait();
+      setLoadStatus(false);
     } catch (err) {
       console.log(err.message);
     }
   }
+//! Don't know why the imageUrl is not getting updated while rendering
+
 
   const [isConsLive, setConsLive] = useState(false);
   const [isVoted, setVoted] = useState(false);
@@ -122,13 +155,15 @@ const Pools = () => {
   }));
 
   return (
-    <div className='pools-div'> 
+    <div className='pools-div'>
+      {loadStatus && <Loader />}
+      {!loadStatus && <>      
         <div className='pools-list-par'>
         <h1 className='pools-heading'>Your Pools</h1>
         <List
           itemLayout="vertical"
           size="large"
-          dataSource={data}
+          dataSource={userPools}
           renderItem={(item) => (
             <List.Item
               key={item.poolId}
@@ -136,23 +171,23 @@ const Pools = () => {
                 <IconText icon={FaUsers} text={item.size} key="list-vertical-users-o" />,
                 <ActionButton text={'Add Funds'} type='primary' onClick={() => { setVis(true); setCurrentPoolId(item.poolId) }} />,
                 // !isConsLive && <ActionButton text={'Start Consensus'} type='primary' onClick={()=>setConsLive(true)} />,
-                (item.funds >= item.goal && !isVoted ) ? <h4 className='pc-consensus-ques'>Do you wanna support buying ? </h4> : '',
-                (item.funds >= item.goal && !isVoted ) ? <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(true)} /> : null,
-                (item.funds >= item.goal && !isVoted ) ? <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(false)} /> : null,
-                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted Yes : 4</h4> : '',
-                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted No : 2</h4> : '',
+                (item.funds >= item.goal ) ? <h4 className='pc-consensus-ques'>Do you wanna support buying ? </h4> : '',
+                (item.funds >= item.goal ) ? <ActionButton text={'Yes'} className={'pool-success-btn'} type='success' onClick={() => makeConsensus(item.poolId, true)} /> : null,
+                (item.funds >= item.goal ) ? <ActionButton text={'No'} type='danger' onClick={() => makeConsensus(item.poolId, false)} /> : null,
+                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted Yes : {item.positive} </h4> : '',
+                (item.funds >= item.goal) ? <h4 className='pc-consensus-data'>Voted No : {item.negate} </h4> : '',
               ]}
               extra={
                 <img
                   width={272}
                   height={180}
                   alt="logo"
-                  src="https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png"
+                  src={item.imageUrl}
                 />
               }
             >
               {
-                (isConsComp) && <Alert className='pc-alert' message={'Consensus is completed'} type='success' showIcon />
+                ((item.positive + item.negate) === item.size) && <Alert className='pc-alert' message={'Consensus is completed'} type='success' showIcon />
               }
               <List.Item.Meta
                 title={<Link className='pc-heading' to={`/pools/${item.poolId}`}>{item.name}</Link>}
@@ -181,6 +216,7 @@ const Pools = () => {
           </Form>
         </Modal>
       </div>
+      </>} 
     </div>
   )
 }

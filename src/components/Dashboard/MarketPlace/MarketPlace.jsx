@@ -9,8 +9,10 @@ import FakeItTokenContractArtifact from '../../../Ethereum/FakeIt.json'
 import MarketPlaceContractArtifact from '../../../Ethereum/MarketPlace.json'
 import Axios from 'axios'
 import { ethers } from 'ethers';
+import Loader from '../../../shared/Loader/Loader';
 
 const MarketPlace = () => {
+  const [loadStatus, setLoadStatus] = useState(false);
   let userAddress = GetAccount();
   let fakeItTokenContract = GetContract(addresses.fakeItToken, FakeItTokenContractArtifact.abi);
   let MarketPlaceContract = GetContract(addresses.marketPlaceAddress, MarketPlaceContractArtifact.abi);
@@ -31,6 +33,7 @@ const MarketPlace = () => {
 
   const mintNFT = async () => {
     try {
+        setLoadStatus(true);
         const url = getUrl();
         const imageData = await Axios({
             method: "GET",
@@ -52,12 +55,14 @@ const MarketPlace = () => {
             },
         });
         console.log(res.data.IpfsHash);
-        await (await fakeItTokenContract.safeMint(userAddress, res.data.IpfsHash, { value: ethers.utils.parseEther("10") })).wait()
+        await (await fakeItTokenContract.safeMint(userAddress, res.data.IpfsHash, { value: ethers.utils.parseEther("0.01"), gasLimit: 9000000  })).wait()
         const nftId = await fakeItTokenContract.getTokenCount();
+        // await nftId.wait();
         console.log(" this is nft id ", nftId);
-        await(await fakeItTokenContract.setApprovalForAll(addresses.marketPlaceAddress, true)).wait();
+        await(await fakeItTokenContract.setApprovalForAll(addresses.marketPlaceAddress, true,  { gasLimit: 9000000 })).wait();
         const listingPrice = 0.01;
         await(await MarketPlaceContract.makeItem(addresses.fakeItToken, nftId, ethers.utils.parseEther(listingPrice.toString()), { gasLimit: 9000000 })).wait();
+        setLoadStatus(false);
     } catch (err) {
         console.log(err.message);
     }
@@ -65,6 +70,7 @@ const MarketPlace = () => {
 
   const getAllNFTs = async () => {
     try {
+        setLoadStatus(true);
         let allTokens = [];
         let totalNFTCount = await fakeItTokenContract.getTokenCount();
         for(let i=0; i <= totalNFTCount; i++) {
@@ -87,6 +93,7 @@ const MarketPlace = () => {
         }
         console.log(" this is all tokens data ", allTokens);
         setTokens(allTokens);
+        setLoadStatus(false);
     } catch (err) {
         console.log(err.message);
     }
@@ -105,58 +112,97 @@ const MarketPlace = () => {
     })).wait()
   }
 
-  const data = [
-    {
-        uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-    {
-        uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-    {
-        uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-    {
-        uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-    {
-        uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
-        tagline: "NFT Title",
-        tokenId: "0x3827277dicnw882283",
-        price: 5,
-        seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
-    },
-  ];
+// <<<<<<< HEAD
+//   const data = [
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFBvYLzJXg6OKR7zgOdXQB4S5tLLxAZevCeg&usqp=CAU",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//   ];
+// =======
+//   const data = [
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//     {
+//         uri: "https://res.cloudinary.com/musicalide/image/upload/v1658234370/NFT-images/Ferb_Fletcher4_hcyctl.webp",
+//         tagline: "NFT Title",
+//         tokenId: "0x3827277dicnw882283",
+//         price: 5,
+//         seller: "0x042d434242015acd48e3889C2510DFe221D5fABb"
+//     },
+//   ];
+// >>>>>>> 7c997defd05d0e334ce6bf6c863631ceb20eaf5f
 
   return (
     <div className='mp-div'>
+        { loadStatus  && <Loader />}
+        {!loadStatus && <>
         <h1 className='mp-heading'>Market Place</h1>
         <button onClick={() => mintNFT()}> mint </button>
         <div className='mp-grid-div'>
             {
-                data.map((item, index) => {
+                tokens.map((item, index) => {
                     return (
                         <Card
                             key={index}
                             cover={<img src={item.uri} alt={item.name} className='mp-cover-img' />}
-                            actions={[
-                                <ActionButton text={'Buy'} itemId = {index} />,
-                            ]}
                             className='mp-card'
                         >
                             <h3 className='mp-card-heading'>{item.tagline}</h3>
@@ -178,6 +224,8 @@ const MarketPlace = () => {
                 })
             }
         </div>
+        </>
+        }
     </div>
   )
 }

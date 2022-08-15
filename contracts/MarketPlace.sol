@@ -51,7 +51,7 @@ contract MarketPlace is ReentrancyGuard {
     function makeItem(IERC721 _nft, uint _tokenId, uint _price) external nonReentrant {
         require(_price > 0, "Price must be greater than zero");
         // increment itemCount
-        itemCount ++;
+        itemCount++;
         // transfer nft
         _nft.transferFrom(msg.sender, address(this), _tokenId);
         // add new item to items mapping
@@ -77,11 +77,12 @@ contract MarketPlace is ReentrancyGuard {
         uint _totalPrice = getTotalPrice(_itemId);
         Item storage item = items[_itemId];
         require(_itemId > 0 && _itemId <= itemCount, "item doesn't exist");
-        require(msg.value >= _totalPrice, "not enough ether to cover item price and market fee");
+        // diluting this for now
+        // require(msg.value >= _totalPrice, "not enough ether to cover item price and market fee");
         require(!item.sold, "item already sold");
-        // pay seller and feeAccount
-        item.seller.transfer(item.price);
-        feeAccount.transfer(_totalPrice - item.price);
+        // pay seller and feeAccount not paying anyone for now
+        // item.seller.transfer(item.price);
+        // feeAccount.transfer(_totalPrice - item.price);
         // update item to sold
         item.sold = true;
         // transfer nft to buyer

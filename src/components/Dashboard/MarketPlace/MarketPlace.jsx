@@ -191,43 +191,42 @@ const MarketPlace = () => {
 // >>>>>>> 7c997defd05d0e334ce6bf6c863631ceb20eaf5f
 
   return (
-    <div className='mp-div'>
-        { loadStatus  && <Loader />}
-        {!loadStatus && <>
-        <h1 className='mp-heading'>Market Place</h1>
-        <button onClick={() => mintNFT()}> mint </button>
-        <div className='mp-grid-div'>
-            {
-                tokens.map((item, index) => {
-                    return (
-                        <Card
-                            key={index}
-                            cover={<img src={item.uri} alt={item.name} className='mp-cover-img' />}
-                            className='mp-card'
-                        >
-                            <h3 className='mp-card-heading'>{item.tagline}</h3>
-                            <h3 className='mp-card-heading'> TokenId: {item.tokenId} </h3> 
-                            <div className='mp-card-price'>
-                                <span>Price</span><br/>
-                                <div>
-                                    <FaEthereum />
-                                    {item.price}
+        loadStatus ?
+        <Loader />
+        :
+        <div className='mp-div'>
+            <h1 className='mp-heading'>Market Place</h1>
+            <button onClick={() => mintNFT()}> mint </button>
+            <div className='mp-grid-div'>
+                {
+                    tokens.map((item, index) => {
+                        return (
+                            <Card
+                                key={index}
+                                cover={<img src={item.uri} alt={item.name} className='mp-cover-img' />}
+                                className='mp-card'
+                            >
+                                <h3 className='mp-card-heading'>{item.tagline}</h3>
+                                <h3 className='mp-card-heading'> TokenId: {item.tokenId} </h3> 
+                                <div className='mp-card-price'>
+                                    <span>Price</span><br/>
+                                    <div>
+                                        <FaEthereum />
+                                        {item.price}
+                                    </div>
                                 </div>
-                            </div>
-                            {item.sold ? "Sold" : "Not Sold"}
-                            <div className='mp-card-address'>
-                                <span>Address</span><br/>
-                                <div>{item.seller.substring(0, 25).concat('...')}</div>
-                            </div>
-                        </Card>
-                    )
-                })
-            }
+                                {item.sold ? "Sold" : "Not Sold"}
+                                <div className='mp-card-address'>
+                                    <span>Address</span><br/>
+                                    <div>{item.seller.substring(0, 25).concat('...')}</div>
+                                </div>
+                            </Card>
+                        )
+                    })
+                }
+            </div>
         </div>
-        </>
-        }
-    </div>
-  )
+  );
 }
 
 export default MarketPlace

@@ -1,10 +1,6 @@
-.loader-pos {
-    display: block;
-    position: fixed;
-    z-index: 1031; 
-    top: 30%;
-    right: 50%;
-    margin-top: 5%;
-    margin-right: 80%;
-    margin-left: 500px;
+.loader-div {
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
+    margin: auto;
 }

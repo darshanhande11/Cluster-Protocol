@@ -46,6 +46,14 @@ Core features we are planning to include in this project.
 - User creates a pool for Buying NFT the pool contain information of NFT tokenId, collection address, participants of pools (people who want fractional ownership over NFT and are ready to contribute) and participants can contribute to the pool the contribution they will make will remain with smart contract.
 - Once the contribution reach the NFT price a consensus will start which will ask each participant to vote whether to buy NFT or not and once the no of "yes" increase more than half of pool participants. Smart contract will buy that NFT in behalf of user from the market place and mint some unique ERC20 tokens corresponding to the unique id of pool and distribute tokens among participants (owners) based on their contribution to the pool and those unique ERC20 tokens will prove the ownership for the user over NFT. So basically smart contract acting as a wallet here for hold NFT belonging to a particular group of members.
 
+## Network Directory
+
+---
+### Network: Goerli
+### Market place contract: 0x099BFEFc39636E843779B82c3C2E9cE12e63d293
+### Pool Manager Contract: 0x83e5b725376a3e3823A3931C979De399d45D2B98
+### Fake NFT collection contract: 0x0bFE8CC582d06c9F05A8C96A68c52F02aB0E19D0
+
 ## Sneap peak
 
 ---

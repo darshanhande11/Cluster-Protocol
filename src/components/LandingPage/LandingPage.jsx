@@ -1,12 +1,21 @@
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import { RightOutlined } from '@ant-design/icons'
 import React from 'react'
 import Navbar from '../../shared/Navbar/Navbar'
 import './LandingPage.css'
 import { useNavigate } from 'react-router-dom'
+import GetAccount from '../../hooks/GetAccount'
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  let account = GetAccount();
+
+  const checkIsWalletConnect = () => {
+    console.log("kya status hai", account);
+    if(account) return true;
+    return false;
+  }
+
   return (
     <div className="lp-bg-div">
       <div className='lp-row1'>
@@ -18,8 +27,12 @@ const LandingPage = () => {
         </div>
       </div>
       <div className='lp-row2'>
-        <Button size='large' type='primary' className='lp-button' onClick={()=>{
-          navigate("/create-pool");
+        <Button size='large' type='primary' className='lp-button' onClick={()=> {
+          if(checkIsWalletConnect()) {
+            navigate("/create-pool");
+          } else {
+            message.error("Please connect your wallet first !");
+          }
         }}>
           <span className='lp-button-text'>Get Started</span>
           <RightOutlined className='lp-button-icon' />

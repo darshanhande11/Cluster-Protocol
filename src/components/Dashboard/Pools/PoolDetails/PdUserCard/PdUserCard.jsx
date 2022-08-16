@@ -6,9 +6,12 @@ const { Meta } = Card;
 
 const PdUserCard = (props) => {
   const [userBalance, setUserBalance] = useState();
+  const [percentage, setPercentage] = useState();
   const getBalance = async () => {
     let balance = await props.balance(props.address);
     setUserBalance(balance / 10**18);
+    let percent = await props.percentage(props.address);
+    setPercentage(percent);
   }
 
   useEffect(() => {
@@ -19,7 +22,7 @@ const PdUserCard = (props) => {
     <Card className='pd-card'>
         <Meta 
             avatar={<Avatar src={`https://robohash.org/${props.address}`} />}
-            title={"Balance: " + (isNaN(userBalance) ? "0" : userBalance) + " " + props.poolId}
+            title={"Ownership " + percentage + "%"}
             description={props.address}
         />
         

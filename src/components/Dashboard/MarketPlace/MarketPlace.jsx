@@ -59,9 +59,11 @@ const MarketPlace = () => {
         const nftId = await fakeItTokenContract.getTokenCount();
         // await nftId.wait();
         console.log(" this is nft id ", nftId);
-        await(await fakeItTokenContract.setApprovalForAll(addresses.marketPlaceAddress, true,  { gasLimit: 9000000 })).wait();
+        let approvalTxn = await fakeItTokenContract.setApprovalForAll(addresses.marketPlaceAddress, true,  { gasLimit: 9000000 });
+        await approvalTxn.wait();
         const listingPrice = 0.01;
-        await(await MarketPlaceContract.makeItem(addresses.fakeItToken, nftId, ethers.utils.parseEther(listingPrice.toString()), { gasLimit: 9000000 })).wait();
+        let makeItemTxn = await MarketPlaceContract.makeItem(addresses.fakeItToken, nftId, ethers.utils.parseEther(listingPrice.toString()), { gasLimit: 9000000 });
+        await makeItemTxn.wait();
         setLoadStatus(false);
     } catch (err) {
         console.log(err.message);
@@ -73,26 +75,30 @@ const MarketPlace = () => {
         setLoadStatus(true);
         let allTokens = [];
         let totalNFTCount = await fakeItTokenContract.getTokenCount();
-        for(let i=0; i <= totalNFTCount; i++) {
-            let tokenUri = await fakeItTokenContract.tokenURI(i);
-            let rawTokenData = await Axios.get(tokenUri);
-            console.log(" this is raw token data ", rawTokenData);
-            // items
-            let tokenMarketData = await MarketPlaceContract.items(i + 1);
-            console.log(" this is tokenUri ", tokenUri);
-            console.log(" this is token market data ", tokenMarketData);
-            allTokens.push({
-                name: rawTokenData.data.name,
-                tagline: rawTokenData.data.title,
-                uri: rawTokenData.data.uri,
-                price: parseInt(tokenMarketData.price._hex) / 10 ** 18,
-                seller: tokenMarketData.seller,
-                sold: tokenMarketData.sold,
-                tokenId: parseInt(tokenMarketData.tokenId._hex)
-            });
+        console.log(" this is total Count ", parseInt(totalNFTCount._hex))
+        if(parseInt(totalNFTCount._hex) !== 10 ** 18) {
+            console.log(" callied this ");
+            for(let i=0; i <= parseInt(totalNFTCount._hex); i++) {
+                let tokenUri = await fakeItTokenContract.tokenURI(i);
+                let rawTokenData = await Axios.get(tokenUri);
+                console.log(" this is raw token data ", rawTokenData);
+                // items
+                let tokenMarketData = await MarketPlaceContract.items(i + 1);
+                console.log(" this is tokenUri ", tokenUri);
+                console.log(" this is token market data ", tokenMarketData);
+                allTokens.push({
+                    name: rawTokenData.data.name,
+                    tagline: rawTokenData.data.title,
+                    uri: rawTokenData.data.uri,
+                    price: parseInt(tokenMarketData.price._hex) / 10 ** 18,
+                    seller: tokenMarketData.seller,
+                    sold: tokenMarketData.sold,
+                    tokenId: parseInt(tokenMarketData.tokenId._hex)
+                });
+            }
+            console.log(" this is all tokens data ", allTokens);
+            setTokens(allTokens);
         }
-        console.log(" this is all tokens data ", allTokens);
-        setTokens(allTokens);
         setLoadStatus(false);
     } catch (err) {
         console.log(err.message);
@@ -196,7 +202,6 @@ const MarketPlace = () => {
     :
     <div className='mp-div'>
         <h1 className='mp-heading'>Market Place</h1>
-        <button onClick={() => mintNFT()}> mint </button>
         <div className='mp-grid-div'>
             {
                 tokens.map((item, index) => {

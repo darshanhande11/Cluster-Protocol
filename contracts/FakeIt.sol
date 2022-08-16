@@ -31,6 +31,7 @@ contract FakeIt is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     }
 
     function getTokenCount() external view returns(uint) {
+        if(tokenCount == 0) return 1 ether;
         return tokenCount - 1;
     }
 

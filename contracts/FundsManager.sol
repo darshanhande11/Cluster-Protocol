@@ -9,7 +9,7 @@ contract MarketPlaceInterface {
 
 contract FundsManager {
     // below is DAI token address for now but will be replace with FakeItNFT token address later
-    address MarketPlaceContractAddress = 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512;
+    address MarketPlaceContractAddress = 0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9;
     // goerli market place 0xE38cfC8E90D92DD66098aAEBDABBE4b4d721365A
     // hardhat market place 0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0
     MarketPlaceInterface MarketPlaceContract;
@@ -43,9 +43,9 @@ contract FundsManager {
             pools[_poolId].owners.push(_owners[i]);
             // 2 means they are part of voting mechanism
             pools[_poolId].voters[_owners[i]] = 2;
+            poolOwners[_owners[i]].push(_poolId);
         }
         pools[_poolId].fundGoal = _fundsGoal;
-        poolOwners[msg.sender].push(_poolId);
         poolIds.push(_poolId);
         pools[_poolId].poolId = _poolId;
         pools[_poolId].tokenId = _tokenId;
@@ -55,6 +55,10 @@ contract FundsManager {
     function contributeFunds(string memory _poolId) external payable {
         pools[_poolId].funds += msg.value;
         pools[_poolId].ownerShips[msg.sender] += msg.value;
+    }
+
+    function getUserContribution(string memory _poolId, address _userAddress) external view returns(uint256) {
+        return pools[_poolId].ownerShips[_userAddress];
     }
 
     // also we will be allowing user to only transfer the sufficient amount not more or less amount
@@ -113,3 +117,4 @@ contract FundsManager {
         
     }
 }
+

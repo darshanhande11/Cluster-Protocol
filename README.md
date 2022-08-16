@@ -29,6 +29,29 @@ Core features we are planning to include in this project.
 
 ## Further thoughts
 
+---
+
 - Can further implement the meta transaction if user agrees to hold some specified amount of token for a specified duration.
 - Modify/Add a habit tracking functionality where dapp will remind user to deposit funds on agreed basis and  to collect funds to buy the aimed NFTs.
 - User can flex their NFTs through the feed they are having access to.
+- Based upon the contribution into the pool the NFT rights will be given to agreed person / person with most contribution.
+- This platform will be kinda solving a problem being a habit tracker as well. 
+- Currently only buying of NFT and owning a fraction is supported will further be adding the selling part of it as well.
+
+## How does it works
+
+---
+
+- Currently our Cluster protocol supports buying NFT of only one collection (the market place for the collection is embedded into platform currently) as the project is till the POC stage itself.
+- User creates a pool for Buying NFT the pool contain information of NFT tokenId, collection address, participants of pools (people who want fractional ownership over NFT and are ready to contribute) and participants can contribute to the pool the contribution they will make will remain with smart contract.
+- Once the contribution reach the NFT price a consensus will start which will ask each participant to vote whether to buy NFT or not and once the no of "yes" increase more than half of pool participants. Smart contract will buy that NFT in behalf of user from the market place and mint some unique ERC20 tokens corresponding to the unique id of pool and distribute tokens among participants (owners) based on their contribution to the pool and those unique ERC20 tokens will prove the ownership for the user over NFT. So basically smart contract acting as a wallet here for hold NFT belonging to a particular group of members.
+
+## Sneap peak
+
+---
+
+<img src="images/landing.png" alt="landing page" />
+<img src="images/consensus.png" alt="landing page" />
+<img src="images/marketplace.png" alt="landing page" />
+<img src="images/ownership.png" alt="landing page" />
+<img src="images/pool.png" alt="landing page" />

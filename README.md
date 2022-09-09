@@ -63,3 +63,5 @@ Core features we are planning to include in this project.
 <img src="images/marketplace.png" alt="landing page" />
 <img src="images/ownership.png" alt="landing page" />
 <img src="images/pool.png" alt="landing page" />
+
+## Thankss
